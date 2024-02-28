@@ -1,31 +1,5 @@
 
 
-
-void  update_env(char ***env, char *new)
-{
-  char	*var;
-  int	i;
-
-  if (!env || !new)
-    return ;
-  i = -1;
-  while ((*env)[++i])
-  {
-    var = get_env_var((*env)[i]);
-    if (!ft_strcmp(var, new))
-    {
-      free(var);
-      free((*env)[i]);
-      (*env)[i] = ft_strdup(new);
-      return ;
-    }
-    free(var);
-  }
-  *env = add_str_to_array(*env, new);
-}
-
-
-
 void get_pwd(char ***env)
 {
   char	buf[PATH_MAX + 1];
@@ -97,4 +71,52 @@ void update_env_str(char **str, char *new, char *temp_env, char *temp_cmd)
   while (len--)
     (*str)[len + cmd_var] = (*str)[len];
   
+}
+
+void  update_env(char ***env, char *new)
+{
+  char	*var;
+  int	i;
+
+  if (!env || !new)
+    return ;
+  i = -1;
+  while ((*env)[++i])
+  {
+    var = get_env_var((*env)[i]);
+    if (!ft_strcmp(var, new))
+    {
+      free(var);
+      free((*env)[i]);
+      (*env)[i] = ft_strdup(new);
+      return ;
+    }
+    free(var);
+  }
+  *env = add_str_to_array(*env, new);
+}
+
+void	print_env(char	**env)
+{
+	char	*temp;
+	int		i;
+	int		j;
+
+	i = -1;
+	while (env && env[++i])
+	{
+		temp = get_env_var(env[i]);
+		j = 0;
+		while (temp[j])
+			j++;
+		if (env[i][j] == '=')
+			printf("%s\n", env[i]);
+		free(temp);
+	}
+}
+
+void	env(char **cmd)
+{
+	if (ft_strcmp(cmd[0], "env") == 0)
+		print_env(shell->env);
 }
