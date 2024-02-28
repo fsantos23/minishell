@@ -1,0 +1,10 @@
+{
+    "C_Cpp.errorSquiggles": "disabled",
+    "files.associations": {
+        "pipex.h": "c",
+        "minishell.h": "c",
+        "array": "c"
+    },
+    "42header.email": "fsantos2@student.42.fr",
+    "42header.username": "fsantos2"
+}
