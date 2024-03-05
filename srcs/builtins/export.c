@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 16:57:53 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/02/28 16:24:48 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/03/02 16:26:32 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	print_exp(char **sorted_env)
 	}
 }
 
-void export(char **cmd, t_general *shell)
+void export(char **cmd)
 {
 	char **export;
 	int i;
@@ -85,7 +85,7 @@ void export(char **cmd, t_general *shell)
 	i = 0;
 	if (!cmd[1])
 	{
-		export = copy_and_alloc(shell->env);
+		export = copy_and_alloc(shell()->env);
 		print_exp(export);
 		free_array(export);
 	}
@@ -95,12 +95,12 @@ void export(char **cmd, t_general *shell)
 		{
 			if (!check_export_conditions(cmd[i]))
 			{
-				shell->error = "not a valid identifier";
-				shell->status = 2;
+				shell()->error = "not a valid identifier";
+				shell()->status = 2;
 				return ;
 			}
 			else
-				update_env(&shell->env, cmd[i]);
+				update_env(&shell()->env, cmd[i]);
 		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 20:53:43 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/02/28 15:32:02 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/03/05 15:18:35 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,22 @@ static int redir(char **input, char *new_input , int *a)
 	return 0;
 }
 
-int expand(char **input, char *new_input, int *a, t_general *shell)
+static void prev_error(char **input, char *new_input, int *a)
+{
+	char *new;
+	int i;
+
+	i = 0;
+	new = ft_itoa(shell()->prev_status);
+	while(new[i])
+	{
+		new_input[a[0]++] = new[i];
+		i++;
+	}
+	input[0] += 2;
+}
+
+int expand(char **input, char *new_input, int *a)
 {
 	char *expand;
 	char *new;
@@ -44,26 +59,25 @@ int expand(char **input, char *new_input, int *a, t_general *shell)
 	
 	i = 0;
 	b = 1;
+	new = NULL;
 	expand = ft_calloc(sizeof(char), (ft_strlen(*input) * 2));
 	while(input[0][b])
 	{
-		//falta acabar de fazer o $? e tambem falta fazer o unset e o export bem
 		if(input[0][1] == '?')
 		{
-			new = ft_itoa(shell->prev_status);
-			printf("new: %s\n", new);
-			break ;
+			prev_error(input, new_input, a);
+			free(expand);
+			return 1;
 		}
 		if(input[0][b] == ' ' || input[0][b] == '\"')
 			break ;
 		expand[i++] = input[0][b++];
 	}
 	new = getenv(expand);
+	free(expand);
 	if(!new)
 	{
 		free(new_input);
-		shell->status = 1;
-		shell->prev_status = 0;
 		return 0;
 	}
 	while(*new)
@@ -75,27 +89,7 @@ int expand(char **input, char *new_input, int *a, t_general *shell)
 	return 1;
 }
 
-void quote_handle(char *input, t_general *shell)
-{
-	char *str;
-	
-	while(1)
-	{
-		signal(SIGINT, handler);
-		write(1, "> ", 2);
-		str = get_next_line(STDIN_FILENO);
-		if(!ft_strncmp(str, "\"", ft_strlen("\"")))
-		{
-			free(str);
-			break;
-		}
-		free(str);
-	}
-	//falta fazer aqui o return do erro e saber qual o erro que da se é se quer que da um erro depois de nao fechar parenteses
-	init_shell(shell);
-}
-
-char *organize_input(char *input, t_general *shell)
+char *organize_input(char *input)
 {
 	char flag;
 	char *new_input;
@@ -103,7 +97,7 @@ char *organize_input(char *input, t_general *shell)
 
 	a = 0;
 	flag = 0;
-	new_input = ft_calloc(sizeof(char),  (ft_strlen(input) * 3));
+	new_input = ft_calloc(sizeof(char),  (ft_strlen(input) * 50));
 	while(*input)
 	{
 		if((*input == '\"' || *input == '\'') && flag == 0)
@@ -118,8 +112,11 @@ char *organize_input(char *input, t_general *shell)
 		}
 		if(flag != '\'' && *input == '$')
 		{
-			if(!expand(&input, new_input, &a, shell))
+			if(!expand(&input, new_input, &a))
+			{
+				shell()->error = "";
 				return NULL;
+			}
 			continue ;
 		}
 		if(flag == 0 && redir(&input, new_input, &a) == 1)
@@ -131,7 +128,11 @@ char *organize_input(char *input, t_general *shell)
 		a++;
 	}
 	if(flag != 0)
-		quote_handle(input, shell);
+	{
+		free(new_input);
+		shell()->error = "syntax error";
+		return NULL;
+	}
 	new_input[a] = '\2';
 	a++;
 	new_input[a] = '\0';

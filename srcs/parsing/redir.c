@@ -6,45 +6,51 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 19:53:32 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/02/28 00:40:09 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/03/05 13:30:47 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
 
-static int	execute_infile(t_redir *redir, t_general *shell)
+int	execute_infile(t_redir *redir)
 {
     int fd_in;
-    
-	fd_in = open(redir->str, O_RDONLY, 0777);
-    return fd_in;
+	
+	fd_in = open(redir->str, O_RDONLY);
+	if(fd_in < 0)
+		return 0;
+	return fd_in;
 }
 
-static int	execute_heredoc(t_redir *redir)
+int	execute_heredoc(t_redir *redir)
 {
 	char	*str;
-	int fd;
+	int heredoc[2];
 
-	//falta perceber o que se passa com heredoc ele abre e escreve tudo bem mas depois nao envia a informação para o file expecificado
-    fd = open("/tmp/temp", O_CREAT | O_RDWR | O_TRUNC, 0777);
+	if(pipe(heredoc) < 0)
+	{
+		perror("pipe");
+		exit(0);
+	}
 	str = NULL;
 	while (1)
 	{
 		write(1, "> ", 2);
 		str = get_next_line(STDIN_FILENO);
-		if (!(ft_strncmp(str, redir->str, ft_strlen(redir->str))) && ((ft_strlen(str)- 1) == ft_strlen(redir->str)))
+		if (!(ft_strncmp(str, redir->str, ft_strlen(redir->str))) && ((ft_strlen(str) - 1) == ft_strlen(redir->str)))
 		{
 			free(str);
 			break ;
 		}
-		write(fd, str, ft_strlen(str));
+		write(heredoc[1], str, ft_strlen(str));
 		free(str);
 	}
-    return fd;
+	close(heredoc[1]);
+    return heredoc[0];
 }
 
-static int	execute_to_outfile(t_redir *redir)
+int	execute_to_outfile(t_redir *redir)
 {
     int fd_out;
     
@@ -55,21 +61,22 @@ static int	execute_to_outfile(t_redir *redir)
     return fd_out;
 }
 
-int execute_redir_all(t_redir *redir, t_general *shell)
+int execute_redir_all(t_redir *redir)
 {
-    int in_out;
+    int fd;
     
-    in_out = -1;
-    while(redir)
-    {
-        close(in_out);
-        if(redir->type == FD_IN)
-            in_out = execute_infile(redir, shell);
-        else if(redir->type == HEREDOC)
-            in_out = execute_heredoc(redir);
-        else
-            in_out = execute_to_outfile(redir);
-        redir = redir->next;
-    }
-    return (in_out);
+	fd = -1;
+	while(redir)
+	{
+		if(fd != -1)
+			close(fd);
+		if(redir->type == FD_IN)
+			fd = execute_infile(redir);
+		else if(redir->type == HEREDOC)
+			fd = execute_heredoc(redir);
+		else
+			fd = execute_to_outfile(redir);
+		redir = redir->next;
+	}
+    return (fd);
 }

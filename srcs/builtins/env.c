@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 10:30:30 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/02/28 17:49:04 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/03/05 14:39:57 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ void update_env_str(char **str, char *new, char *temp_env, char *temp_cmd)
 {
   int env_var;
   int cmd_var;
-  int i;
   int len;
 
   env_var = ft_strlen(temp_env);
@@ -127,7 +126,7 @@ void	print_env(char	**env)
 	}
 }
 
-void	env(char **cmd, t_general *shell)
+void	env(void)
 {
-	print_env(shell->env);
+	print_env(shell()->env);
 }

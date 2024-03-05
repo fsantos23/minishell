@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 11:36:39 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/02/28 17:54:04 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/03/02 16:48:10 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,15 +95,15 @@ int find_variable(char **env, char *var)
     return -1;
 }
 
-void    updt_pwd_var(t_general *shell)
+void    updt_pwd_var()
 {
     char **ch_env;
     char *pwd;
     char *tmp;
 
     pwd = get_pwd_env_format();
-    ch_env = shell->env;
-    if (find_variable(shell->env, "PWD") == -1)
+    ch_env = shell()->env;
+    if (find_variable(shell()->env, "PWD") == -1)
 	{
 		if (find_variable(ch_env, "OLDPWD") != -1)
 			update_env(&ch_env, "OLDPWD");
@@ -113,7 +113,7 @@ void    updt_pwd_var(t_general *shell)
 		if (find_variable(ch_env, "OLDPWD") != -1)
 		{
 			tmp = ft_strjoin("OLDPWD=",
-					&(ch_env)[find_variable(shell->env, "PWD")][4]);
+					&(ch_env)[find_variable(shell()->env, "PWD")][4]);
 			update_env(&ch_env, tmp);
 			free(tmp);
 			update_env(&ch_env, pwd);
@@ -124,14 +124,14 @@ void    updt_pwd_var(t_general *shell)
     free(pwd);
 }
 
-int	cd_home(t_general *shell)
+int	cd_home()
 {
 	int		i;
 
-	i = find_variable(shell->env, "HOME");
+	i = find_variable(shell()->env, "HOME");
 	if (i != -1)
 	{
-		if (chdir(ft_substr(shell->env[i], 5, ft_strlen(shell->env[i]))) == -1)
+		if (chdir(ft_substr(shell()->env[i], 5, ft_strlen(shell()->env[i]))) == -1)
 		{
 			perror("Error:");
 			return (-1);
@@ -142,7 +142,7 @@ int	cd_home(t_general *shell)
 	return (-1);
 }
 
-void cd(char **cmd, t_general *shell)
+void cd(char **cmd)
 {
     int i;
 
@@ -150,7 +150,7 @@ void cd(char **cmd, t_general *shell)
     while (cmd[i])
         i++;
     if (i == 1)
-        cd_home(shell);
+        cd_home();
     else if (i > 2)
     {
         printf("cd: too many arguments\n");
@@ -164,5 +164,5 @@ void cd(char **cmd, t_general *shell)
             return ;
         }
     }
-    updt_pwd_var(shell);
+    updt_pwd_var();
 }

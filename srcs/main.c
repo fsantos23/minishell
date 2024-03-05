@@ -6,18 +6,57 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:24:22 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/02/28 15:54:19 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/03/05 15:35:26 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
+t_sh	*shell(void)
+{
+	static t_sh	shell;
+
+	return (&shell);
+}
+
+int check_exit(void)
+{
+    if(shell()->status == 0 && shell()->status == 130)
+    {
+        shell()->prev_status = shell()->status;
+        shell()->status = 0;
+        return 1;
+    }
+    if(!error_handler())
+    {
+        free(shell()->error);
+        return 1;
+    }
+    else
+    {
+        if(shell()->lvl == 0)
+            free(shell()->error);
+        else
+            shell()->lvl--;
+        return 0;
+    }
+}
+
 void handler(int num)
 {
-    printf("\n");
-    rl_on_new_line();
-    rl_replace_line("", 0);
-    rl_redisplay();
+    if(num == SIGINT)
+    {
+        printf("\n");
+        rl_on_new_line();
+        rl_replace_line("", 0);
+        rl_redisplay();
+        shell()->status = 130;
+        check_exit();
+    }
+    else if(num == SIGQUIT)
+    {
+        printf("Quit core dumped\n");
+    }
 }
 
 int iswhitespace(char *input)
@@ -34,64 +73,52 @@ int iswhitespace(char *input)
     return 0;
 }
 
-t_general *create_general(char **env)
+void create_general(t_sh *shell, char **env)
 {
-    t_general *shell;
-
-    shell = ft_calloc(1, sizeof(t_general));
     shell->status = 0;
     shell->prev_status = 0;
+    //provavelmente vou ter de substituir o env por o get_env
     shell->env = env;
+    shell->lvl = 0;
     shell->error = ft_calloc(sizeof(char), 100);
-    return shell;
 }
 
-static void check_exit(t_general *shell)
-{
-    if(!error_handler(shell))
-    {
-        free(shell->error);
-        init_shell(shell);
-    }
-    else
-    {
-        free_array(shell->env);
-        free(shell->error);
-        free(shell);
-        exit(0);
-    }
-}
-
-void    init_shell(t_general *shell)
+void    init_shell(void)
 {
     char *input;
     
-    while(shell->status == 0)
+    while(1)
     {
+        signal(SIGQUIT, SIG_IGN);
         signal(SIGINT, handler);
         input = readline("msh> ");
-        if(!input || !iswhitespace(input))
+        if (!input)
         {
-            if(input)
+            free(input);
+            break ;
+        }
+        if (!iswhitespace(input))
+        {
+            if (input)
                 free(input);
-            init_shell(shell);
+            continue ;
         }
         add_history(input);
-        create_list(input, shell);
+        create_list(input);
         free(input);
+        if (!check_exit())
+            break ;
     }
-    check_exit(shell);
+    rl_clear_history();
 }
 
 int main(int argc, char **argv, char **env)
 {
     (void)argv;
-    t_general *shell;
 
-    
     if(argc == 1)
     {
-        shell = create_general(env);
-        init_shell(shell);
+        create_general(shell(), env);
+        init_shell();
     }
 }

@@ -36,7 +36,7 @@ LIBFT		=	libft/libft.a
 
 PIPEX		=	pipex/pipex_bonus
 
-CFLAGS		=	 #-Wall -Wextra -Werror -g #-fsanitize=address
+CFLAGS		=	 -Wall -Wextra -Werror -g #-fsanitize=address
 
 RM			=	rm -rf
 
@@ -87,6 +87,6 @@ cl:
 	clear && make r
 
 valgrind:
-	make re  > /dev/null && valgrind --leak-check=full ./$(NAME)
+	make re  > /dev/null && valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./$(NAME)
 
 .PHONY:		all clean fclean re

@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 20:32:59 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/02/21 20:35:43 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/03/05 15:26:35 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void	free_everything(t_cmd *cmd)
 		tmp = cmd;
 		cmd = cmd->next;
 		free(tmp);
-		//close fds 0 1 2
 	}
 }
 

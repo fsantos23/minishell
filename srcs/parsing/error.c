@@ -6,13 +6,13 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 13:12:25 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/02/28 14:54:55 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/03/05 14:53:52 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void check_cmds(t_cmd *cmd, t_general *shell)
+int check_cmds(t_cmd *cmd)
 {
     t_cmd *tmp;
 
@@ -21,20 +21,21 @@ void check_cmds(t_cmd *cmd, t_general *shell)
     {
         if(tmp->path == NULL && tmp->type == CMD)
         {
-            shell->error = ft_strjoin("command not found: ", tmp->args[0]);
-            shell->status = 127;
+            shell()->error = ft_strjoin(tmp->args[0], " : command not found");
+            shell()->status = 127;
+            return 0;
         }
         tmp = tmp->next;
     }
+    return 1;
 }
 
-int error_handler(t_general *shell)
+int error_handler(void)
 {
-    if(shell->exit_code == 1)
+    if(shell()->exit_code == 1)
         return 1;
-    shell->prev_status = shell->status;
-    printf("pre_status: %d\n", shell->prev_status);
-    printf("%s\n", shell->error);
-    shell->status = 0;
+    shell()->prev_status = shell()->status;
+    printf("%s\n", shell()->error);
+    shell()->status = 0;
     return 0;
 }

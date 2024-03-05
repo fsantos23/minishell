@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 16:46:42 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/02/28 17:54:25 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/03/05 14:41:23 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int builtins(char **arg)
   return 0;
 }
 
-void execute_builtins(int in, int out, t_cmd *cmd, t_general *shell)
+void execute_builtins(int in, int out, t_cmd *cmd)
 {
   int origin_in;
   int origin_out;
@@ -42,15 +42,15 @@ void execute_builtins(int in, int out, t_cmd *cmd, t_general *shell)
   dup2(out, STDOUT_FILENO);
   close_fd(in, out);
   if (!ft_strncmp(cmd->args[0], "cd", ft_strlen(cmd->args[0])))
-    cd(cmd->args, shell);
+    cd(cmd->args);
   else if (!ft_strncmp(cmd->args[0], "export", ft_strlen(cmd->args[0])))
-    export(cmd->args, shell);
+    export(cmd->args);
   else if (!ft_strncmp(cmd->args[0], "unset", ft_strlen(cmd->args[0])))
-    unset(cmd->args, shell);
+    unset(cmd->args);
   else if (!ft_strncmp(cmd->args[0], "env", ft_strlen(cmd->args[0])))
-    env(shell->env, shell);
+    env();
   else if (!ft_strncmp(cmd->args[0], "exit", ft_strlen(cmd->args[0])))
-    ft_exit(cmd, shell);
+    ft_exit();
   else if (!ft_strncmp(cmd->args[0], "echo", ft_strlen(cmd->args[0])))
     echo(cmd->args);
   else if (!ft_strncmp(cmd->args[0], "pwd", ft_strlen(cmd->args[0])))

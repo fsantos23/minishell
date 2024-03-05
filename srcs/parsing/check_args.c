@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 16:47:44 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/02/28 01:26:13 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/03/05 15:00:20 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,10 @@ void print_cmd(t_cmd *cmd)
 		printf("cmd->path: %s\n", cmd->path);
 		i = 0;
 		printf("herererrererer \n");
+		if(cmd->ins)
+		{
+			printf("ins: %s\n", cmd->ins->str);
+		}
 		while(cmd->args[i])
 		{
 			printf("cmd->cmd_args[%d]: %s\n", i, cmd->args[i]);
@@ -145,7 +149,7 @@ t_cmd *create_cmd(char *str)
 	{
 		redir = create_redir(i, cmd);
 		if (redir)
-		{	
+		{
 			if (redir->type == HEREDOC || redir->type == FD_IN)
 			{
 				if (redir_in_end)
@@ -199,49 +203,64 @@ t_cmd *return_cmd(char **args, char **env)
 	return head;
 }
 
-static int check_ins(t_cmd *cmd, t_general *shell)
+int check_ins(t_redir *redir)
 {
-	t_cmd *tmp;
-	
-	tmp = cmd;
-	while(tmp)
+	t_redir *cpy;
+	struct stat status;
+
+	cpy = redir;
+	while(cpy)
 	{
-		while(tmp->ins)
+		if(access(cpy->str, F_OK) != 0)
 		{
-			if(tmp->ins->type == FD_IN && access(tmp->ins->str, F_OK) == -1)
-			{
-				shell->status = 2;
-				shell->error = ft_strjoin("file does not exists: ", tmp->ins->str);
-				free_everything(cmd);
-				return 0;
-			}
-			tmp->ins = tmp->ins->next;
+			shell()->status = 1;
+			shell()->error = ft_strjoin("no such file or directory : ", cpy->str);
+			return 0;
 		}
-		tmp = tmp->next;
+		if(access(cpy->str, R_OK) != 0)
+		{
+			shell()->status = 1;
+			shell()->error = ft_strjoin("can't read that file : ", cpy->str);
+			return 0;
+		}
+		if((cpy->type == FD_OUT || cpy->type == FD_OUT_APP) && access(cpy->str, R_OK) != 0)
+		{
+			shell()->status = 1;
+			shell()->error = ft_strjoin("can't read that file : ", cpy->str);
+			return 0;
+		}
+		if(stat(cpy->str, &status) == -1)
+			perror("stat\n");
+		if(S_ISDIR(status.st_mode))
+		{
+			shell()->status = 1;
+			shell()->error = ft_strjoin("is a directory : ", cpy->str);
+			return 0;
+		}
+		cpy = cpy->next;
 	}
 	return 1;
 }
 
-void create_list(char *input, t_general *shell)
+void create_list(char *input)
 {
 	t_cmd *cmd;
 	char *arg; 
 	char **args;
-	int i;
-	
-	i = 0;
-	arg = organize_input(input, shell);
+
+	arg = organize_input(input);
 	if(!arg)
 	{
 		free(arg);
+		printf("%s\n", shell()->error);
+		check_exit();
 		return ;
 	}
 	args = ft_split(arg, '\3');
 	free(arg);
-	cmd = return_cmd(args, shell->env);
+	cmd = return_cmd(args, shell()->env);
 	free_array(args);
-	if (!check_ins(cmd, shell))
-		return ;
-	execute_cmds(cmd, shell);
+	if(check_ins(cmd->ins) && check_ins(cmd->outs))
+		execute_cmds(cmd);
 	free_everything(cmd);
 }
