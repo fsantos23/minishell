@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:24:22 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/03/05 15:35:26 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/03/05 23:23:05 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ void    init_shell(void)
 {
     char *input;
     
+
+    //falta ver o clear que esta a correr mal e o heredoc pois mais uma newline no final
     while(1)
     {
         signal(SIGQUIT, SIG_IGN);

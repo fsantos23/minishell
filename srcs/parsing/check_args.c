@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 16:47:44 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/03/05 15:00:20 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/03/05 23:21:27 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,31 +211,34 @@ int check_ins(t_redir *redir)
 	cpy = redir;
 	while(cpy)
 	{
-		if(access(cpy->str, F_OK) != 0)
+		if(cpy->type != HEREDOC)
 		{
-			shell()->status = 1;
-			shell()->error = ft_strjoin("no such file or directory : ", cpy->str);
-			return 0;
-		}
-		if(access(cpy->str, R_OK) != 0)
-		{
-			shell()->status = 1;
-			shell()->error = ft_strjoin("can't read that file : ", cpy->str);
-			return 0;
-		}
-		if((cpy->type == FD_OUT || cpy->type == FD_OUT_APP) && access(cpy->str, R_OK) != 0)
-		{
-			shell()->status = 1;
-			shell()->error = ft_strjoin("can't read that file : ", cpy->str);
-			return 0;
-		}
-		if(stat(cpy->str, &status) == -1)
-			perror("stat\n");
-		if(S_ISDIR(status.st_mode))
-		{
-			shell()->status = 1;
-			shell()->error = ft_strjoin("is a directory : ", cpy->str);
-			return 0;
+			if(access(cpy->str, F_OK) != 0)
+			{
+				shell()->status = 1;
+				shell()->error = ft_strjoin("no such file or directory : ", cpy->str);
+				return 0;
+			}
+			if(access(cpy->str, R_OK) != 0)
+			{
+				shell()->status = 1;
+				shell()->error = ft_strjoin("can't read that file : ", cpy->str);
+				return 0;
+			}
+			if((cpy->type == FD_OUT || cpy->type == FD_OUT_APP) && access(cpy->str, R_OK) != 0)
+			{
+				shell()->status = 1;
+				shell()->error = ft_strjoin("can't read that file : ", cpy->str);
+				return 0;
+			}
+			if(stat(cpy->str, &status) == -1)
+				perror("stat\n");
+			if(S_ISDIR(status.st_mode))
+			{
+				shell()->status = 1;
+				shell()->error = ft_strjoin("is a directory : ", cpy->str);
+				return 0;
+			}			
 		}
 		cpy = cpy->next;
 	}
