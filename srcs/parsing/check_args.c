@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 16:47:44 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/03/05 23:21:27 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/03/06 10:30:29 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -263,6 +263,7 @@ void create_list(char *input)
 	free(arg);
 	cmd = return_cmd(args, shell()->env);
 	free_array(args);
+	//falta só atualizar o check_ins, ou seja, as permissoes para os files 
 	if(check_ins(cmd->ins) && check_ins(cmd->outs))
 		execute_cmds(cmd);
 	free_everything(cmd);

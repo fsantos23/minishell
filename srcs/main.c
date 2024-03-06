@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:24:22 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/03/05 23:23:05 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/03/06 10:30:42 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_sh	*shell(void)
 
 int check_exit(void)
 {
-    if(shell()->status == 0 && shell()->status == 130)
+    if(shell()->status == 0 || shell()->status == 130)
     {
         shell()->prev_status = shell()->status;
         shell()->status = 0;
@@ -87,8 +87,6 @@ void    init_shell(void)
 {
     char *input;
     
-
-    //falta ver o clear que esta a correr mal e o heredoc pois mais uma newline no final
     while(1)
     {
         signal(SIGQUIT, SIG_IGN);
