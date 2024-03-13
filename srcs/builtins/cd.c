@@ -12,49 +12,6 @@
 
 #include <minishell.h>
 
-/* void cd(char **cmd, t_general *shell) 
-{
-  char *temp;
-  char **tmp;
-  int i;
-  int ar_index;
-  char cur_dir[10000];
-  char **root_dir;
-
-  root_dir = NULL;
-  if(!cmd[1])
-  {
-    getcwd(cur_dir, sizeof(cur_dir));
-    root_dir = ft_split(cur_dir, '/');
-    root_dir[0] = ft_strjoin("/", root_dir[0]);
-    if(chdir(root_dir[0]) != 0)
-    {
-      perror("error");
-      return ;      
-    }
-  }
-  else if(ft_strncmp(cmd[1], "..", ft_strlen(cmd[1])) == 0)
-  {
-    shell->error = ft_strjoin("not an absolute path: ", cmd[1]);
-    shell->status = 1;
-    return ;
-  }
-  else
-  {
-    char *dir = cmd[1];
-    printf("%s\n", dir);
-    if(chdir(dir) != 0)
-    {
-      shell->status = 2;
-      shell->error = ft_strjoin("path does not exist: ", cmd[1]);
-      return ;      
-    }
-  }
-  update_env(&shell->env, "OLDPWD=");
-  update_env(&shell->env, "PWD=");
-}
- */
-
 char *get_pwd_env_format(void)
 {
     char buf[PATH_MAX + 1];

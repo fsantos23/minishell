@@ -33,32 +33,31 @@ char  **rm_str_from_array(char **array, int index)
     if (i != index)
       new[++j] = ft_strdup(array[i]);
   }
-  free_array(array);
   return new;
 }
-
-char **add_str_to_array(char **array, char *str)
+void add_str_to_array(char ***array, char *str)
 {
-  char	**new;
-  int	i;
+    int len;
+    len = 0;
 
-  i = 0;
-  if (!array || !str)
-    return NULL;
-  while (array[i])
-    i++;
-  new = malloc(sizeof(char *) * (i+ 2));
-  if (!new)
-    return NULL;
-  i = -1;
-  while ((array)[++i])
-    new[i] = ft_strdup((array)[i]);
-  new[i++] = ft_strdup(str);
-  new[i] = NULL;
-  free_array(array);
-  return (new);
+    while ((*array)[len])
+        len++;
+
+    char **new_array = malloc(sizeof(char *) * (len + 2));
+    if (!new_array)
+        return;
+
+    int i = 0;
+    while(i < len) {
+        new_array[i] = strdup((*array)[i]);
+        i++;
+    }
+
+    new_array[len] = strdup(str);
+    new_array[len + 1] = NULL;
+
+    *array = new_array;
 }
-
 
 char	*get_env_var(char *str)
 {

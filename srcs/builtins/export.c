@@ -99,8 +99,9 @@ void export(char **cmd)
 				shell()->status = 2;
 				return ;
 			}
-			else
-				update_env(&shell()->env, cmd[i]);
+			else {
+                update_env(&shell()->env, cmd[i]);
+            }
 		}
 	}
 }

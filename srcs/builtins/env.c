@@ -98,13 +98,15 @@ void  update_env(char ***env, char *new)
     if (!ft_strncmp(var, new, ft_strlen(var)))
     {
       free(var);
-      free((*env)[i]);
+      //free((*env)[i]);
       (*env)[i] = ft_strdup(new);
       return ;
     }
     free(var);
   }
-  *env = add_str_to_array(*env, new);
+
+    add_str_to_array(env, new);
+  //*env = add_str_to_array(*env, new);
 }
 
 void	print_env(char	**env)
