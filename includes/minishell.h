@@ -132,7 +132,7 @@ char	**get_env(char **envp); //
 void export(char **cmd); //
 char	**copy_array(char **array);
 char	*get_env_var(char *str);
-char **add_str_to_array(char **array, char *str);
+void add_str_to_array(char ***array, char *str);
 void  unset(char **cmd); //
 char  **rm_str_from_array(char **array, int index);
 void update_env(char ***env, char *update);
