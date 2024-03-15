@@ -29,7 +29,7 @@ int check_exit(void)
     }
     if(!error_handler())
     {
-        free(shell()->error);
+        //free(shell()->error);
         return 1;
     }
     else
@@ -78,7 +78,7 @@ void create_general(t_sh *shell, char **env)
     shell->status = 0;
     shell->prev_status = 0;
     //provavelmente vou ter de substituir o env por o get_env
-    shell->env = env;
+    shell->env = get_env(env);
     shell->lvl = 0;
     shell->error = ft_calloc(sizeof(char), 100);
 }
@@ -86,8 +86,9 @@ void create_general(t_sh *shell, char **env)
 void    init_shell(void)
 {
     char *input;
-    
-    while(1)
+
+    shell()->prompt = true;
+    while(shell()->prompt == true)
     {
         signal(SIGQUIT, SIG_IGN);
         signal(SIGINT, handler);
@@ -121,4 +122,5 @@ int main(int argc, char **argv, char **env)
         create_general(shell(), env);
         init_shell();
     }
+    return (shell()->exit_code);
 }
