@@ -71,6 +71,7 @@ typedef struct s_cmd {
 } t_cmd;
 
 typedef struct s_sh {
+    bool prompt;
     int status;
     int prev_status;
     int exit_code;
@@ -136,8 +137,9 @@ void add_str_to_array(char ***array, char *str);
 void  unset(char **cmd); //
 char  **rm_str_from_array(char **array, int index);
 void update_env(char ***env, char *update);
-void	env(void); //
-void ft_exit(void);
+void	env(char **cmd); //
+void	ft_exit(char **cmd);
+int	ft_strcmp(char *s1, char *s2);
 
 
 #endif
