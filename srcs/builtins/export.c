@@ -41,7 +41,7 @@ char	**copy_and_alloc(char **array)
 		j = -1;
 		while (new && new[++j] && new[j + 1])
 		{
-			if (ft_strncmp(new[j], new[j + 1], ft_strlen(new[j])) > 0)
+			if (ft_strcmp(new[j], new[j + 1]) > 0)
 			{
 				temp = new[j];
 				new[j] = new[j + 1];
@@ -62,7 +62,7 @@ void	print_exp(char **sorted_env)
 	while (sorted_env[++i])
 	{
 		temp = get_env_var(sorted_env[i]);
-		if (ft_strncmp(temp, "_", ft_strlen(temp)) != 0)
+		if (ft_strcmp(temp, "_") != 0)
 		{
 			printf("declare -x %s", temp);
 			j = 0;

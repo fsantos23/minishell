@@ -42,7 +42,7 @@ int find_variable(char **env, char *var)
     while(env[++i])
     {
         tmp = get_env_var(env[i]);
-        if (!ft_strncmp(tmp, var, ft_strlen(tmp)))
+        if (!ft_strcmp(tmp, var))
         {
             free(tmp);
             return i;

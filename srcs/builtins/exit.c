@@ -12,9 +12,25 @@
 
 #include <minishell.h>
 
-void ft_exit(void)
+void	ft_exit(char **cmd)
 {
+    int	i;
+
     printf("exit\n");
-    shell()->exit_code = 1;
-    shell()->status = 1;
+    i = -1;
+    while (cmd && cmd[1] && cmd[1][++i])
+    {
+        if (i == 0 && (cmd[1][0] == '+' || cmd[1][0] == '-'))
+            continue ;
+        else if (!ft_isdigit(cmd[1][i]))
+        {
+            write(STDERR_FILENO, " numeric argument required\n", 27);
+            break ;
+        }
+        else if (cmd[1][i + 1] == '\0' && cmd[2])
+        {
+            write(STDERR_FILENO, " too many arguments\n", 20);
+        }
+    }
+    shell()->prompt = false;
 }

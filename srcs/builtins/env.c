@@ -54,7 +54,7 @@ char	**get_env(char **envp)
 	while (env[++i])
 	{
 		var = get_env_var(env[i]);
-		if (!ft_strncmp("SHLVL", var, 5))
+		if (!ft_strcmp("SHLVL", var))
 		{
 			update_shlvl(&env, &env[i][ft_strlen(var) + 1]);
 			get_pwd(&env);
@@ -95,7 +95,7 @@ void  update_env(char ***env, char *new)
   while ((*env)[++i])
   {
     var = get_env_var((*env)[i]);
-    if (!ft_strncmp(var, new, ft_strlen(var)))
+    if (!ft_strcmp(var, new))
     {
       free(var);
       //free((*env)[i]);
@@ -128,7 +128,8 @@ void	print_env(char	**env)
 	}
 }
 
-void	env(void)
+void	env(char **cmd)
 {
-	print_env(shell()->env);
+    if (ft_strcmp(cmd[0], "env") == 0)
+        print_env(shell()->env);
 }

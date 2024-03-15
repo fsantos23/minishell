@@ -41,19 +41,19 @@ void execute_builtins(int in, int out, t_cmd *cmd)
   dup2(in, STDIN_FILENO);
   dup2(out, STDOUT_FILENO);
   close_fd(in, out);
-  if (!ft_strncmp(cmd->args[0], "cd", ft_strlen(cmd->args[0])))
+  if (!ft_strcmp(cmd->args[0], "cd"))
     cd(cmd->args);
-  else if (!ft_strncmp(cmd->args[0], "export", ft_strlen(cmd->args[0])))
+  else if (!ft_strcmp(cmd->args[0], "export"))
     export(cmd->args);
-  else if (!ft_strncmp(cmd->args[0], "unset", ft_strlen(cmd->args[0])))
+  else if (!ft_strcmp(cmd->args[0], "unset"))
     unset(cmd->args);
-  else if (!ft_strncmp(cmd->args[0], "env", ft_strlen(cmd->args[0])))
-    env();
-  else if (!ft_strncmp(cmd->args[0], "exit", ft_strlen(cmd->args[0])))
-    ft_exit();
-  else if (!ft_strncmp(cmd->args[0], "echo", ft_strlen(cmd->args[0])))
+  else if (!ft_strcmp(cmd->args[0], "env"))
+    env(cmd->args);
+  else if (!ft_strcmp(cmd->args[0], "exit"))
+    ft_exit(cmd->args);
+  else if (!ft_strcmp(cmd->args[0], "echo"))
     echo(cmd->args);
-  else if (!ft_strncmp(cmd->args[0], "pwd", ft_strlen(cmd->args[0])))
+  else if (!ft_strcmp(cmd->args[0], "pwd"))
     pwd();
   dup2(origin_in, STDIN_FILENO);
   dup2(origin_out, STDOUT_FILENO);
