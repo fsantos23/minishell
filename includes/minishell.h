@@ -135,7 +135,7 @@ char	**copy_array(char **array);
 char	*get_env_var(char *str);
 void add_str_to_array(char ***array, char *str);
 void  unset(char **cmd); //
-char  **rm_str_from_array(char **array, int index);
+void	rm_str_from_array(char ***array, int index);
 void update_env(char ***env, char *update);
 void	env(char **cmd); //
 void	ft_exit(char **cmd);
