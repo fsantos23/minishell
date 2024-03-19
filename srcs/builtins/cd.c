@@ -69,8 +69,7 @@ void    updt_pwd_var()
 	{
 		if (find_variable(ch_env, "OLDPWD") != -1)
 		{
-			tmp = ft_strjoin("OLDPWD=",
-					&(ch_env)[find_variable(shell()->env, "PWD")][4]);
+			tmp = ft_strjoin("OLDPWD=",&(ch_env)[find_variable(shell()->env, "PWD")][4]);
 			update_env(&ch_env, tmp);
 			free(tmp);
 			update_env(&ch_env, pwd);

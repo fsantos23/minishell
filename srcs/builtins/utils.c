@@ -12,28 +12,32 @@
 
 #include <minishell.h>
 
-char  **rm_str_from_array(char **array, int index)
+void	rm_str_from_array(char ***array, int index)
 {
-  char	**new;
-  int	i;
-  int	j;
+    char	**new_array;
+    int		len;
+    int		i;
 
-  i = 0;
-  j = -1;
-  if (!array || !(array)[index])
-    return NULL;
-  while (array[i])
-    i++;
-  new = malloc(sizeof(char *) * i);
-  if (!new)
-    return NULL;
-  i = -1;
-  while (array[++i])
-  {
-    if (i != index)
-      new[++j] = ft_strdup(array[i]);
-  }
-  return new;
+    if (!(*array))
+        return ;
+    else
+    {
+        len = 0;
+        while ((*array)[len])
+            len++;
+        new_array = malloc(sizeof(char *) * len);
+        if (!new_array)
+            return ;
+        i = -1;
+        len = 0;
+        while ((*array)[++i])
+        {
+            if (i != index)
+                new_array[len++] = ft_strdup((*array)[i]);
+        }
+        new_array[len] = NULL;
+        *array = new_array;
+    }
 }
 void add_str_to_array(char ***array, char *str)
 {

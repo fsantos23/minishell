@@ -35,11 +35,12 @@ void  unset(char **cmd)
   char  *temp;
   int   i;
   int   ar_index;
-  
+
   if (!cmd[1])
   {
     shell()->status = 2;
-    shell()->error = "not enough arguments"; 
+    shell()->error = "not enough arguments";
+    return ;
   }
   if (cmd[1])
   {
@@ -55,14 +56,14 @@ void  unset(char **cmd)
               shell()->status = 2;
               return ;
           }
-        temp = get_env_var(shell()->env[ar_index]);
-                if (ft_strcmp(cmd[i], temp) == 0)
-				{
-					shell()->env = rm_str_from_array(shell()->env, ar_index);
-					free(temp);
-					break ;
-				}
-        free(temp);
+          temp = get_env_var(shell()->env[ar_index]);
+          if (ft_strcmp(cmd[i], temp) == 0)
+          {
+              rm_str_from_array(&shell()->env, ar_index);
+              free(temp);
+              break ;
+          }
+          free(temp);
       }
     }
   }
