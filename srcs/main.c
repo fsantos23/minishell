@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:24:22 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/03/06 10:30:42 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/03/26 15:42:56 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ void create_general(t_sh *shell, char **env)
 {
     shell->status = 0;
     shell->prev_status = 0;
-    //provavelmente vou ter de substituir o env por o get_env
     shell->env = get_env(env);
     shell->lvl = 0;
     shell->error = ft_calloc(sizeof(char), 100);

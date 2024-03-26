@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 20:53:43 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/03/05 15:18:35 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/03/26 15:52:50 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,15 @@ int expand(char **input, char *new_input, int *a)
 			break ;
 		expand[i++] = input[0][b++];
 	}
+	if(!ft_strncmp("$", expand, ft_strlen(expand)))
+	{
+		free(expand);
+		return 0;
+	}
 	new = getenv(expand);
 	free(expand);
 	if(!new)
-	{
-		free(new_input);
 		return 0;
-	}
 	while(*new)
 	{
 		new_input[a[0]++] = *new;
@@ -114,7 +116,8 @@ char *organize_input(char *input)
 		{
 			if(!expand(&input, new_input, &a))
 			{
-				shell()->error = "";
+				shell()->error = "command not found";
+				free(new_input);
 				return NULL;
 			}
 			continue ;
