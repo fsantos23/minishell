@@ -29,7 +29,7 @@ int check_exit(void)
     }
     if(!error_handler())
     {
-        //free(shell()->error);
+        //ft_memset(shell()->error, 0, 100);
         return 1;
     }
     else
@@ -77,7 +77,7 @@ void create_general(t_sh *shell, char **env)
 {
     shell->status = 0;
     shell->prev_status = 0;
-    //provavelmente vou ter de substituir o env por o get_env
+    shell->exit_code = 0;
     shell->env = get_env(env);
     shell->lvl = 0;
     shell->error = ft_calloc(sizeof(char), 100);
