@@ -12,76 +12,54 @@
 
 #include <minishell.h>
 
-void rm_str_from_array(char ***array, int index)
+void	rm_str_from_array(char ***array, int index)
 {
+    char	**new_array;
+    int		len;
+    int		i;
+
     if (!(*array))
-        return;
-
-    int len = 0;
-    while ((*array)[len])
-        len++;
-
-    // allocating memory for the new array
-    char **new_array = malloc(sizeof(char *) * (len + 1));
-    if (!new_array)
-        return;
-
-    int i = 0;
-    int j = 0;
-    while ((*array)[i])
+        return ;
+    else
     {
-        // if current index is not the one to be removed, copy the string to the new array
-        if (i != index)
+        len = 0;
+        while ((*array)[len])
+            len++;
+        new_array = malloc(sizeof(char *) * len);
+        if (!new_array)
+            return ;
+        i = -1;
+        len = 0;
+        while ((*array)[++i])
         {
-            new_array[j] = strdup((*array)[i]);
-            // if strdup failed (returned NULL), free the already allocated memory and return
-            if (!new_array[j])
-            {
-                new_array[j+1] = NULL;        // mark the end of the successfully created string array
-                free_array(new_array);        // free the new_array
-                return;
-            }
-            j++;
+            if (i != index)
+                new_array[len++] = ft_strdup((*array)[i]);
         }
-        i++;
+        new_array[len] = NULL;
+        free_array2(array);
+        *array = new_array;
     }
-    new_array[j] = NULL; // marking the end of the new array
-
-    // free the old array after making sure new_array is properly allocated
-    free_array2(array);
-    *array = new_array;
 }
 
 void add_str_to_array(char ***array, char *str)
 {
-    if (!(*array) || !str)
-        return;
-    int len = 0;
+    int len;
+    len = 0;
+
     while ((*array)[len])
         len++;
+
     char **new_array = malloc(sizeof(char *) * (len + 2));
     if (!new_array)
         return;
+
     int i = 0;
-    while(i < len)
-    {
+    while(i < len) {
         new_array[i] = strdup((*array)[i]);
-        if (!new_array[i])                // if strdup failed (returned NULL)
-        {
-            new_array[i+1] = NULL;        // mark the end of the successfully created string array
-            free_array(new_array);        // free the new_array
-            return;
-        }
         i++;
     }
 
-    new_array[len] = strdup(str);
-    if (!new_array[len])
-    {
-        new_array[len + 1] = NULL;
-        free_array(new_array);           // free the new_array if strdup failed here
-        return;
-    }
+    new_array[len] = ft_strdup(str);
     new_array[len + 1] = NULL;
     free_array2(array);
     *array = new_array;
