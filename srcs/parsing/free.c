@@ -67,7 +67,25 @@ void	free_array(char **str)
 	while (str && str[i])
 	{
 		free(str[i]);
+        str[i] = NULL;
 		i++;
 	}
 	free(str);
+    str = NULL;
+}
+
+void	free_array2(char ***array)
+{
+    int		i;
+    int		len;
+
+    if (!(*array))
+        return ;
+    len = 0;
+    while ((*array)[len])
+        len++;
+    i = -1;
+    while (++i < len)
+        free((*array)[i]);
+    free((*array));
 }
