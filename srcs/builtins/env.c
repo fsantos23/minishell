@@ -66,22 +66,6 @@ char	**get_env(char **envp)
 	return (env);
 }
 
-void update_env_str(char **str, char *new, char *temp_env, char *temp_cmd)
-{
-  int env_var;
-  int cmd_var;
-  int len;
-
-  env_var = ft_strlen(temp_env);
-  cmd_var = ft_strlen(temp_cmd);
-  if((*str)[env_var] && !new[cmd_var])
-    return ;
-  len = ft_strlen(*str);
-  while (len--)
-    (*str)[len + cmd_var] = (*str)[len];
-
-}
-
 void update_env(char ***env, char *new) {
     char **existing_var_split;
     char **new_var_split;
@@ -96,20 +80,20 @@ void update_env(char ***env, char *new) {
 
         if (ft_strcmp(existing_var_split[0], new_var_split[0]) == 0)
         {
-            if (ft_strchr(new, '=') == NULL)
+            char* duplicated_new = NULL;
+            if (ft_strchr(new, '=') != NULL)
             {
-                free_array(existing_var_split);
-                free_array(new_var_split);
-                return;
+                duplicated_new = ft_strdup(new);
+                free((*env)[i]);
+                (*env)[i] = duplicated_new;
             }
-            free((*env)[i]);
-            (*env)[i] = ft_strdup(new);
             free_array(existing_var_split);
             free_array(new_var_split);
             return;
         }
         free_array(existing_var_split);
     }
+
     add_str_to_array(env, new);
     free_array(new_var_split);
 }
