@@ -105,8 +105,7 @@ int check_exit(void);
 
 char				*ft_strdup_path(char *env, int *x, char *cmd);
 void				start_pipex(t_cmd *cmd, char **env);
-/* char				*path(t_cmd *cmd, char *env, char *cmds);
- */char				*search_path(char **env, char *cmd);
+char				*search_path(char **env, char *cmd);
 int					ft_strlen_path(char *env, int x);
 void				free_everything(t_cmd *all);
 void				execute_path(t_cmd *cmd, char **env);
@@ -128,8 +127,8 @@ void 	pwd(void);
 void cd(char **cmd); //
 void    put_ls(char *input);
 int builtins(char **arg);
-void  echo(char **cmd);
-char	**get_env(char **envp); //
+char	**get_env(char **envp);
+void  echo(char **cmd); //
 void export(char **cmd); //
 char	**copy_array(char **array);
 char	*get_env_var(char *str);
@@ -138,8 +137,11 @@ void  unset(char **cmd); //
 void	rm_str_from_array(char ***array, int index);
 void update_env(char ***env, char *update);
 void	env(char **cmd); //
+int find_variable(char **env, char *var);
 void	ft_exit(char **cmd);
 int	ft_strcmp(char *s1, char *s2);
+void	free_array2(char ***array);
+
 
 
 #endif
