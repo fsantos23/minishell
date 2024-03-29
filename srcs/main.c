@@ -29,7 +29,6 @@ int check_exit(void)
     }
     if(!error_handler())
     {
-        //ft_memset(shell()->error, 0, 100);
         return 1;
     }
     else
@@ -122,5 +121,24 @@ int main(int argc, char **argv, char **env)
         create_general(shell(), env);
         init_shell();
     }
+
+    // cleaning up
+    if(shell()->error) {
+        free(shell()->error);
+        shell()->error = NULL;
+    }
+
+    if(shell()->env) {
+        // Get the size of the environment array
+        int i = 0;
+        while (shell()->env[i])
+        {
+            free(shell()->env[i]);
+            i++;
+        }
+        free(shell()->env);
+        shell()->env = NULL;
+    }
+
     return (shell()->exit_code);
 }
