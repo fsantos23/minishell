@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:24:22 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/03/26 15:42:56 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/03 14:51:17 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,7 @@ int check_exit(void)
         return 1;
     }
     if(!error_handler())
-    {
-        //free(shell()->error);
         return 1;
-    }
     else
     {
         if(shell()->lvl == 0)
@@ -77,6 +74,7 @@ void create_general(t_sh *shell, char **env)
 {
     shell->status = 0;
     shell->prev_status = 0;
+    shell->exit_code = 0;
     shell->env = get_env(env);
     shell->lvl = 0;
     shell->error = ft_calloc(sizeof(char), 100);
@@ -99,7 +97,7 @@ void    init_shell(void)
         }
         if (!iswhitespace(input))
         {
-            if (input)
+            if(input)
                 free(input);
             continue ;
         }
@@ -120,6 +118,21 @@ int main(int argc, char **argv, char **env)
     {
         create_general(shell(), env);
         init_shell();
+    }
+    if(shell()->error) {
+        free(shell()->error);
+        shell()->error = NULL;
+    }
+    if(shell()->env) 
+    {
+        int i = 0;
+        while (shell()->env[i])
+        {
+            free(shell()->env[i]);
+            i++;
+        }
+        free(shell()->env);
+        shell()->env = NULL;
     }
     return (shell()->exit_code);
 }

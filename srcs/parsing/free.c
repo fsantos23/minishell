@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 20:32:59 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/03/05 15:26:35 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/03 14:24:01 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	free_everything(t_cmd *cmd)
 
 	while (cmd)
 	{
-		if(cmd->type == CMD)
+		if(cmd->type == CMD || cmd->type == BUILTIN)
 		{
 			free_array(cmd->args);
 			if(cmd->path)

@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 15:53:23 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/02/21 19:07:12 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/03 14:17:19 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,11 @@ void	rm_str_from_array(char ***array, int index)
                 new_array[len++] = ft_strdup((*array)[i]);
         }
         new_array[len] = NULL;
+        free_array(*array);
         *array = new_array;
     }
 }
+
 void add_str_to_array(char ***array, char *str)
 {
     int len;
@@ -57,9 +59,9 @@ void add_str_to_array(char ***array, char *str)
         i++;
     }
 
-    new_array[len] = strdup(str);
+    new_array[len] = ft_strdup(str);
     new_array[len + 1] = NULL;
-
+    free_array(*array);
     *array = new_array;
 }
 
