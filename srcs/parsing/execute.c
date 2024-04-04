@@ -38,15 +38,6 @@ static void check_sigs(char *cmd)
     }
 }
 
-int close_fd(int in, int out)
-{
-    if (in != 0)
-        close(in);
-    if (out != 1)
-        close(out);
-    return (1);
-}
-
 static void execute_cmd(int in, int out, t_cmd *cmd)
 {
     check_sigs(cmd->args[0]);
