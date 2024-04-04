@@ -6,55 +6,11 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:24:22 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/03 14:51:17 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/03 17:03:25 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
-t_sh	*shell(void)
-{
-	static t_sh	shell;
-
-	return (&shell);
-}
-
-int check_exit(void)
-{
-    if(shell()->status == 0 || shell()->status == 130)
-    {
-        shell()->prev_status = shell()->status;
-        shell()->status = 0;
-        return 1;
-    }
-    if(!error_handler())
-        return 1;
-    else
-    {
-        if(shell()->lvl == 0)
-            free(shell()->error);
-        else
-            shell()->lvl--;
-        return 0;
-    }
-}
-
-void handler(int num)
-{
-    if(num == SIGINT)
-    {
-        printf("\n");
-        rl_on_new_line();
-        rl_replace_line("", 0);
-        rl_redisplay();
-        shell()->status = 130;
-        check_exit();
-    }
-    else if(num == SIGQUIT)
-    {
-        printf("Quit core dumped\n");
-    }
-}
 
 int iswhitespace(char *input)
 {
