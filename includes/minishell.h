@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:22:38 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/03/05 15:22:01 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/03 17:08:52 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,21 +84,27 @@ t_sh *shell(void);
 
 //----------parsing------------//
 
-void create_list(char *input);
-char *organize_input(char *input);
-void exec(t_cmd *cmd);
-void print_cmd(t_cmd *cmd);
-void execute_cmds(t_cmd *cmd);
-void print_redir(t_redir *redir);
-void    init_shell(void);
-void return_error(char *str);
-void check_quotes(t_redir *redir);
-int execute_redir_all(t_redir *redir);
-int check_cmds(t_cmd *cmd);
-int close_fd(int in, int out);
-void handler(int num);
-int error_handler(void);
-int check_exit(void);
+void        create_list(char *input);
+char        *organize_input(char *input);
+void        print_cmd(t_cmd *cmd);
+void        execute_cmds(t_cmd *cmd);
+void        print_redir(t_redir *redir);
+void        init_shell(void);
+int         execute_redir_all(t_redir *redir);
+int         check_cmds(t_cmd *cmd);
+int         close_fd(int in, int out);
+void        handler(int num);
+int         error_handler(void);
+int         check_exit(void);
+int         size_args(char **args);
+void        print_cmd(t_cmd *cmd);
+char        **normalize(char **args, int size);
+t_type      get_type(char *str);
+void        print_redir(t_redir *redir);
+t_redir     *create_redir(int index, t_cmd *cmd);
+int         close_fd(int in, int out);
+
+
 
 
 //----------pipex------------//
@@ -122,26 +128,33 @@ void				check_args(t_cmd *cmd);
 
 //----------builtins------------//
 
-void execute_builtins(int in, int out, t_cmd *cmd);
-void 	pwd(void);
-void cd(char **cmd); //
-void    put_ls(char *input);
-int builtins(char **arg);
+
 char	**get_env(char **envp);
-void  echo(char **cmd); //
-void export(char **cmd); //
+void	get_pwd(char ***env);
+void	update_shlvl(char ***env, char *value);
+void	update_env(char ***env, char *new);
+void	print_env(char	**env);
+
+void	env(char **cmd);
+void    cd(char **cmd);
+void 	pwd(void);
+void    echo(char **cmd);
+void    export(char **cmd); 
+void    unset(char **cmd); 
+
+
+void    execute_builtins(int in, int out, t_cmd *cmd);
+int     builtins(char **arg);
+
+
 char	**copy_array(char **array);
 char	*get_env_var(char *str);
-void add_str_to_array(char ***array, char *str);
-void  unset(char **cmd); //
+void    add_str_to_array(char ***array, char *str);
 void	rm_str_from_array(char ***array, int index);
-void update_env(char ***env, char *update);
-void	env(char **cmd); //
-int find_variable(char **env, char *var);
+void    update_env(char ***env, char *update);
+int     find_variable(char **env, char *var);
 void	ft_exit(char **cmd);
-int	ft_strcmp(char *s1, char *s2);
+int	    ft_strcmp(char *s1, char *s2);
 void	free_array2(char ***array);
-
-
 
 #endif
