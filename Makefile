@@ -6,6 +6,7 @@ PIPEX_DIR = srcs/pipex
 
 SRCS		=	$(SRCS_DIR)/main.c \
 				$(NOT_PARS_DIR)/env.c \
+				$(NOT_PARS_DIR)/env_ext.c \
 				$(NOT_PARS_DIR)/pwd.c \
 				$(NOT_PARS_DIR)/cd.c \
 				$(NOT_PARS_DIR)/echo.c \
@@ -16,7 +17,7 @@ SRCS		=	$(SRCS_DIR)/main.c \
 				$(NOT_PARS_DIR)/check_builtins.c \
 				$(PARS_DIR)/check_args.c \
 				$(PARS_DIR)/utils.c \
-				$(PARS_DIR)/type.c \
+				$(PARS_DIR)/check_args2.c \
 				$(PARS_DIR)/execute.c \
 				$(PARS_DIR)/redir.c \
 				$(PARS_DIR)/organize.c \
