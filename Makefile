@@ -41,7 +41,7 @@ CFLAGS		=	 -Wall -Wextra -Werror -g #-fsanitize=address
 
 RM			=	rm -rf
 
-INC			=	-Iincludes -I/usr/include -Ilibft/includes -Ipipex/includes -Iget_next_line/includes -lreadline
+INC			=	-Iincludes -I/usr/include -Ilibft/includes -Ipipex/includes -Iget_next_line/includes 
 
 # /* ~~~~~~~ Colors ~~~~~~~ */
 BLACK:="\033[1;30m"
@@ -57,25 +57,25 @@ EOC:="\033[0;0m"
 all:		$(NAME)
 
 $(OBJS_DIR)/%.o :	$(SRCS_DIR)/%.c
-		mkdir -p $(@D)
-		$(CC) $(CFLAGS) $(INC) -c $< -o $@
+		@mkdir -p $(@D)
+		@$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 $(NAME):	$(OBJS)
 			@echo $(RED) "[🚀Compiling libft...🚀]" $(EOC)
 			@make -C libft > /dev/null
 			@echo $(GREEN) "[Libft compiled!]" $(EOC)
-			$(CC) $(OBJS) $(LIBFT) $(GNL) $(CFLAGS) $(INC) -o $(NAME)
+			@$(CC) $(OBJS) -lreadline $(LIBFT) $(GNL) $(CFLAGS) $(INC) -o $(NAME)
 			@echo $(GREEN) "[Minishell compiled!]" $(EOC)
 
 clean:
 			@echo $(PURPLE) "[🧹Cleaning...🧹]" $(EOC)
-			$(RM) $(OBJS)
+			@$(RM) $(OBJS)
 
 fclean:		clean
 			@echo $(PURPLE) "[🧹FCleaning...🧹]" $(EOC)
-			$(RM) $(NAME)
-			$(RM) *.out
-			$(RM) $(OBJS_DIR)
+			@$(RM) $(NAME)
+			@$(RM) *.out
+			@$(RM) $(OBJS_DIR)
 			@make fclean -C libft > /dev/null
 			@echo $(GREEN) "[All cleaned!]" $(EOC)
 

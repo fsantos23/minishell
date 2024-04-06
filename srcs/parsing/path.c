@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 20:32:19 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/02/21 20:32:34 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/06 16:05:59 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ char	**search_env(char **env)
 	char	**paths;
 
 	i = 0;
+	path = NULL;
+	paths = NULL;
 	while (env[i])
 	{
 		if (ft_strnstr(env[i], "PATH=", 6) != NULL)

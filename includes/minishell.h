@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:22:38 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/06 07:28:25 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/06 17:14:14 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,9 @@ void        print_redir(t_redir *redir);
 t_redir     *create_redir(int index, t_cmd *cmd);
 int         close_fd(int in, int out);
 int         iswhitespace(char *input);
+int	        check_ins(t_redir *redir);
+t_type	    cmd_type(char **arg);
+int         bs(t_redir *cpy);
 
 
 
