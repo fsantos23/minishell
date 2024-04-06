@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 13:12:25 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/06 03:30:45 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/06 15:11:53 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int check_cmds(t_cmd *cmd)
 
 int error_handler(void)
 {
-    if(shell()->exit_code == 1)
+    if(shell()->exit_code != -1)
         return 1;
     shell()->prev_status = shell()->status;
     printf("%s\n", shell()->error);

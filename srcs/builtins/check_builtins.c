@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 16:46:42 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/03 17:00:50 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/06 15:10:18 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int builtins(char **arg)
     return 1;
   else if(!ft_strncmp(arg[0], "cd", 3))
     return 1;
-  else if(!ft_strncmp(arg[0], "exit", 5) && arg[1] == NULL)
+  else if(!ft_strncmp(arg[0], "exit", 5))
     return 1;
   else if(!ft_strncmp(arg[0], "export", 7))
     return 1;

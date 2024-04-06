@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 17:41:49 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/06 03:48:16 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/06 15:15:10 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_sh	*shell(void)
 
 int check_exit(void)
 {
-    if((shell()->status == 0 || shell()->status == 130) && shell()->exit_code == 0)
+    if((shell()->status == 0 || shell()->status == 130) && shell()->exit_code == -1)
     {
         shell()->prev_status = shell()->status;
         shell()->status = 0;
@@ -29,8 +29,13 @@ int check_exit(void)
     }
     if(!error_handler())
         return 1;
-    else if(shell()->exit_code == 1)
+    else if(shell()->exit_code != -1)
     {
+        if(shell()->error)
+        {
+            printf("%s\n", shell()->error);
+            free(shell()->error);
+        }
         shell()->lvl--;
         return 0;
     }
