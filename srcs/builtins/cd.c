@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 11:36:39 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/03 17:00:59 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/06 14:41:28 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,14 +89,14 @@ int	cd_home(void)
     {
         if (chdir(&shell()->env[i][5]) == -1)
         {
-            perror("Error:");
-            shell()->exit_code = 1;
-            return (-1);
+            shell()->error = ft_strdup("HOME not found");
+            shell()->status = 1;
+            return 1;
         }
         return (0);
     }
     printf("var Home disabled\n");
-    return (-1);
+    return 0;
 }
 
 void cd(char **cmd)
@@ -107,22 +107,24 @@ void cd(char **cmd)
     while (cmd[i])
         i++;
     if (i == 1)
-        cd_home();
+    {
+        if (cd_home())
+            return ;
+    }
     else if (i > 2)
     {
-        write(STDERR_FILENO, " too many arguments\n", 20);
-        shell()->exit_code = 1;
+        shell()->error = ft_strdup("too many arguments");
+        shell()->status = 1;
         return ;
     }
     else
     {
         if (chdir(cmd[1]) == -1)
         {
-            perror("Error");
-            shell()->exit_code = 1;
+            shell()->error = ft_strdup("not a valid path");
+            shell()->status = 1;
             return ;
         }
     }
     updt_pwd_var();
-    shell()->exit_code = 0;
 }

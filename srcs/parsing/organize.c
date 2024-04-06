@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 20:53:43 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/06 03:35:09 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/06 05:12:04 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ char *organize_input(char *input)
 
 	a = 0;
 	flag = 0;
-	new_input = ft_calloc(sizeof(char),  (ft_strlen(input) * 50));
+	new_input = ft_calloc(sizeof(char),  (ft_strlen(input) * 3));
 	while(*input)
 	{
 		if((*input == '\"' || *input == '\'') && flag == 0)
@@ -132,13 +132,12 @@ char *organize_input(char *input)
 			expand(&input, new_input, &a);
 			continue ;
 		}
-		if(flag == 0 && redir(&input, new_input, &a) == 1)
+		if(flag == 0 && redir(&input, new_input, &a))
 			continue ;
 		else if(*input == ' ' && flag == 0)
 			*input = '\2';
-		new_input[a] = *input;
-		input++;
-		a++;
+		if(*input)
+			new_input[a++] = *input++;
 	}
 	if(flag != 0)
 	{
@@ -146,8 +145,7 @@ char *organize_input(char *input)
 		shell()->error = ft_strdup("syntax error");
 		return NULL;
 	}
-	new_input[a] = '\2';
-	a++;
+	new_input[a++] = '\2';
 	new_input[a] = '\0';
 	return new_input;
 }

@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:05:26 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/03 17:06:27 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/06 07:26:59 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,35 +27,6 @@ char **normalize(char **args, int size)
 	}
 	return args;
 }
-
-void print_cmd(t_cmd *cmd)
-{
-	int i = 0;
-
-	if (cmd)
-	{
-		printf("cmd->cmd: %s\n", cmd->cmd);
-		printf("cmd->cmd_args: %s\n", cmd->args[0]);
-		/* printf("cmd->in_file: %s\n", cmd->in_file); */
-		/* printf("cmd->out_file: %s\n", cmd->out_file); */
-		/* printf("cmd->heredoc: %s\n", cmd->heredoc); */
-		printf("cmd->cmd_type: %d\n", cmd->type);
-		printf("cmd->path: %s\n", cmd->path);
-		i = 0;
-		printf("herererrererer \n");
-		if(cmd->ins)
-		{
-			printf("ins: %s\n", cmd->ins->str);
-		}
-		while(cmd->args[i])
-		{
-			printf("cmd->cmd_args[%d]: %s\n", i, cmd->args[i]);
-			i++;
-		}
-		printf("----------------------------------------------------------------------------------------\n");
-	}
-}
-
 
 t_type get_type(char *str)
 {
@@ -101,11 +72,4 @@ t_redir *create_redir(int index, t_cmd *cmd)
 		cmd->args[j] = 0;
 	}
 	return redir;
-}
-
-void print_redir(t_redir *redir)
-{
-	printf("======redir=====\n");
-	printf("type: %d\n", redir->type);
-	printf("arg: %s\n", redir->str);
 }

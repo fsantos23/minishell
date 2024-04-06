@@ -6,32 +6,38 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 15:50:17 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/06 03:27:06 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/06 15:04:46 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
+
+
+
 void	ft_exit(char **cmd)
 {
     int i;
+    int a;
 
     printf("exit\n");
-    i = -1;
-    while (cmd && cmd[1] && cmd[1][++i])
+    i = 1;
+    a = 0;
+    while(cmd[i])
     {
-        if (i == 0 && (cmd[1][0] == '+' || cmd[1][0] == '-'))
-            continue ;
-        else if (!ft_isdigit(cmd[1][i]))
+        a++;
+        if(i == 2 && !shell()->error)
         {
-            write(STDERR_FILENO, " numeric argument required\n", 27);
-            break ;
+            shell()->error = ft_strdup("too many arguments");
+            shell()->status = "";
+            return ;
         }
-        else if (cmd[1][i + 1] == '\0' && cmd[2])
+        while(cmd[i][a])
         {
-            write(STDERR_FILENO, " too many arguments\n", 20);
+            if(!ft_isdigit(cmd[i][a]))
+                shell()->error = ft_strdup("not a valid argument");
         }
+        i++;
     }
     shell()->prompt = false;
-    shell()->exit_code = 1;
 }
