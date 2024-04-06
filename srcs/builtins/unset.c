@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 15:55:19 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/03 17:00:31 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/06 03:32:08 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void  unset(char **cmd)
   if (!cmd[1])
   {
     shell()->status = 2;
-    shell()->error = "not enough arguments";
+    shell()->error = ft_strdup("not enough arguments");
     return ;
   }
   if (cmd[1])
@@ -52,7 +52,7 @@ void  unset(char **cmd)
       {
           if (!check_unset_conditions(cmd[i]))
           {
-              shell()->error = "invalid parameter name";
+              shell()->error = ft_strdup("invalid parameter name");
               shell()->status = 2;
               return ;
           }

@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 20:53:43 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/03 14:36:54 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/06 03:35:09 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,27 @@ static void prev_error(char **input, char *new_input, int *a)
 	input[0] += 2;
 }
 
-int expand(char **input, char *new_input, int *a)
+char *expand_env(char *expand)
+{
+	int i;
+	char *new;
+
+	i = 0;
+	new = NULL;
+	// problema aqui algures com leaks
+	while(shell()->env[i])
+	{
+		if(!ft_strncmp(shell()->env[i], expand, ft_strlen(expand)))
+		{
+			new = ft_substr(shell()->env[i], ft_strlen(expand) + 1, ft_strlen(shell()->env[i]) - (ft_strlen(expand)));
+			return new;
+		}
+		i++;
+	}
+	return new;
+}
+
+void expand(char **input, char *new_input, int *a)
 {
 	char *expand;
 	char *new;
@@ -68,23 +88,22 @@ int expand(char **input, char *new_input, int *a)
 		{
 			prev_error(input, new_input, a);
 			free(expand);
-			return 1;
+			return ;
 		}
 		if(input[0][b] == ' ' || input[0][b] == '\"')
 			break ;
 		expand[i++] = input[0][b++];
 	}
-	new = getenv(expand);
+	new = expand_env(expand);
 	free(expand);
 	if(!new)
-		return 0;
+		return ;
 	while(*new)
 	{
 		new_input[a[0]++] = *new;
 		new++;
 	}
 	input[0] += b;
-	return 1;
 }
 
 char *organize_input(char *input)
@@ -110,12 +129,7 @@ char *organize_input(char *input)
 		}
 		if(flag != '\'' && *input == '$')
 		{
-			if(!expand(&input, new_input, &a))
-			{
-				shell()->error = "command not found";
-				free(new_input);
-				return NULL;
-			}
+			expand(&input, new_input, &a);
 			continue ;
 		}
 		if(flag == 0 && redir(&input, new_input, &a) == 1)
@@ -129,7 +143,7 @@ char *organize_input(char *input)
 	if(flag != 0)
 	{
 		free(new_input);
-		shell()->error = "syntax error";
+		shell()->error = ft_strdup("syntax error");
 		return NULL;
 	}
 	new_input[a] = '\2';

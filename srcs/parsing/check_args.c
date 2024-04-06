@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 16:47:44 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/03 17:04:41 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/06 03:34:39 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,13 @@ t_cmd *create_cmd(char *str)
 	t_redir *redir;
 	t_redir *redir_in_end;
 	t_redir *redir_out_end;
-
+	//error when i do cat | then exit 
+	if(!str || !iswhitespace(str))
+	{
+		shell()->error = ft_strdup("syntax error");
+		shell()->status = 1;
+		return NULL;
+	}
 	cmd = ft_calloc(1, sizeof(t_cmd));
 	cmd->args = ft_split(str, '\2');
 	cmd->pip[0] = 0;
@@ -81,6 +87,12 @@ t_cmd *return_cmd(char **args, char **env)
 	while (args[i])
 	{
 		tmp = create_cmd(args[i++]);
+		if(tmp == NULL)
+		{
+			if(head)
+				free_everything(head);
+			return NULL;
+		}
 		tmp->path = search_path(env, tmp->args[0]);
 		tmp->type = cmd_type(tmp->args);
 		if(!head)
@@ -106,30 +118,24 @@ int check_ins(t_redir *redir)
 	{
 		if(cpy->type != HEREDOC)
 		{
-			if(access(cpy->str, F_OK) != 0)
+			if(cpy->type == FD_IN && access(cpy->str, F_OK) != 0)
 			{
 				shell()->status = 1;
-				shell()->error = ft_strjoin("no such file or directory : ", cpy->str);
+				shell()->error = ft_strdup(ft_strjoin("no such file or directory : ", cpy->str));
 				return 0;
 			}
-			if(access(cpy->str, R_OK) != 0)
+			if(cpy->type == FD_IN && access(cpy->str, R_OK) != 0)
 			{
 				shell()->status = 1;
-				shell()->error = ft_strjoin("can't read that file : ", cpy->str);
+				shell()->error = ft_strdup(ft_strjoin("can't read that file : ", cpy->str));
 				return 0;
 			}
-			if((cpy->type == FD_OUT || cpy->type == FD_OUT_APP) && access(cpy->str, R_OK) != 0)
-			{
-				shell()->status = 1;
-				shell()->error = ft_strjoin("can't read that file : ", cpy->str);
-				return 0;
-			}
-			if(stat(cpy->str, &status) == -1)
+			if(cpy->type == FD_IN && stat(cpy->str, &status) == -1)
 				perror("stat\n");
-			if(S_ISDIR(status.st_mode))
+			if(cpy->type == FD_IN && S_ISDIR(status.st_mode))
 			{
 				shell()->status = 1;
-				shell()->error = ft_strjoin("is a directory : ", cpy->str);
+				shell()->error = ft_strdup(ft_strjoin("is a directory : ", cpy->str));
 				return 0;
 			}			
 		}
@@ -147,16 +153,16 @@ void create_list(char *input)
 	arg = organize_input(input);
 	if(!arg)
 	{
+		shell()->status = 1;
 		free(arg);
-		printf("%s\n", shell()->error);
-		check_exit();
 		return ;
 	}
 	args = ft_split(arg, '\3');
 	free(arg);
 	cmd = return_cmd(args, shell()->env);
 	free_array(args);
-	//falta só atualizar o check_ins, ou seja, as permissoes para os files 
+	if(cmd == NULL)
+		return ;
 	if(check_ins(cmd->ins) && check_ins(cmd->outs))
 		execute_cmds(cmd);
 	free_everything(cmd);

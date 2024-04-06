@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:24:22 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/03 17:03:25 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/06 03:30:17 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int iswhitespace(char *input)
     i = 0;
     while(input[i])
     {
-        if(input[i] != ' ')
+        if(input[i] != ' ' && input[i] != '\t' && input[i] != '\2')
             return 1;
         i++;
     }
@@ -33,7 +33,6 @@ void create_general(t_sh *shell, char **env)
     shell->exit_code = 0;
     shell->env = get_env(env);
     shell->lvl = 0;
-    shell->error = ft_calloc(sizeof(char), 100);
 }
 
 void    init_shell(void)
@@ -66,6 +65,8 @@ void    init_shell(void)
     rl_clear_history();
 }
 
+//falta checkar leaks no $USER quando faço expand
+
 int main(int argc, char **argv, char **env)
 {
     (void)argv;
@@ -75,20 +76,10 @@ int main(int argc, char **argv, char **env)
         create_general(shell(), env);
         init_shell();
     }
-    if(shell()->error) {
+    /* if(shell()->error) {
         free(shell()->error);
-        shell()->error = NULL;
-    }
-    if(shell()->env) 
-    {
-        int i = 0;
-        while (shell()->env[i])
-        {
-            free(shell()->env[i]);
-            i++;
-        }
-        free(shell()->env);
-        shell()->env = NULL;
-    }
+        shell()->error = NULL; 
+    } */
+    free_array(shell()->env);
     return (shell()->exit_code);
 }

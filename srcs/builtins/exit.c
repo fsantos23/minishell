@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 15:50:17 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/03 17:28:59 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/06 03:27:06 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,5 @@ void	ft_exit(char **cmd)
         }
     }
     shell()->prompt = false;
+    shell()->exit_code = 1;
 }

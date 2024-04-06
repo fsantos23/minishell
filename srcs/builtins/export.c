@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 16:57:53 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/03/02 16:26:32 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/06 03:31:22 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void export(char **cmd)
 		{
 			if (!check_export_conditions(cmd[i]))
 			{
-				shell()->error = "not a valid identifier";
+				shell()->error = ft_strdup("not a valid identifier");
 				shell()->status = 2;
 				return ;
 			}

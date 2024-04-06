@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 13:12:25 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/03/05 14:53:52 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/06 03:30:45 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int error_handler(void)
         return 1;
     shell()->prev_status = shell()->status;
     printf("%s\n", shell()->error);
+    free(shell()->error);
     shell()->status = 0;
     return 0;
 }
