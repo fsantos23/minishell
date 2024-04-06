@@ -60,6 +60,21 @@ static void execute_cmd(int in, int out, t_cmd *cmd)
     close_fd(in, out);
 }
 
+static int execute_single_command(int in, int out, t_cmd *cmd) {
+    cmd->fd_in = execute_redir_all(cmd->ins);
+    cmd->fd_out = execute_redir_all(cmd->outs);
+    
+    if (cmd->fd_in != -1)
+        in = cmd->fd_in;
+    if (cmd->fd_out != -1)
+        out = cmd->fd_out;
+    if (cmd->type == BUILTIN)
+        execute_builtins(in, out, cmd);
+    else
+        execute_cmd(in, out, cmd);
+    return cmd->pip[0]; // Return the read end of the pipe for the next command
+}
+
 static void execute_pipe(t_cmd *cmd)
 {
     t_cmd *tmp = cmd;
@@ -75,17 +90,7 @@ static void execute_pipe(t_cmd *cmd)
             exit(EXIT_FAILURE);
         }
         out = cmd->pip[1];
-        cmd->fd_in = execute_redir_all(cmd->ins);
-        cmd->fd_out = execute_redir_all(cmd->outs);
-        if (cmd->fd_in != -1)
-            in = cmd->fd_in;
-        if(cmd->fd_out != -1)
-            out = cmd->fd_out;
-        if(cmd->type == BUILTIN)
-            execute_builtins(in, out, cmd);
-        else
-            execute_cmd(in, out, cmd);
-        in = cmd->pip[0];
+        in = execute_single_command(in, out, cmd);
         cmd = cmd->next;
     }
     while(tmp)
