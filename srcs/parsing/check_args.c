@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 16:47:44 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/06 16:47:25 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/07 19:19:20 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 void	process_redirections(t_cmd *cmd, t_redir *redir, \
 t_redir **redir_in_end, t_redir **redir_out_end)
 {
-	if (redir->type == HEREDOC || redir->type == FD_IN) 
+	if (redir->type == HEREDOC || redir->type == FD_IN)
 	{
 		if (*redir_in_end)
 			(*redir_in_end)->next = redir;
@@ -25,7 +25,7 @@ t_redir **redir_in_end, t_redir **redir_out_end)
 			cmd->ins = redir;
 		*redir_in_end = redir;
 	}
-	if (redir->type == FD_OUT || redir->type == FD_OUT_APP) 
+	if (redir->type == FD_OUT || redir->type == FD_OUT_APP)
 	{
 		if (*redir_out_end)
 			(*redir_out_end)->next = redir;

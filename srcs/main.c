@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:24:22 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/06 16:38:25 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/07 19:09:49 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	create_general(t_sh *shell, char **env)
 	shell->prev_status = 0;
 	shell->env = get_env(env);
 	shell->lvl = 0;
+	shell->error = NULL;
 }
 
 void	init_shell(void)

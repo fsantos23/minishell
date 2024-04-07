@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:05:26 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/06 17:15:52 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/07 19:17:09 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,15 +85,13 @@ int	check_ins(t_redir *redir)
 			return (0);
 		if (cpy->type == FD_IN && (access(cpy->str, R_OK) != 0))
 		{
-			(shell()->error = ft_strdup(\
-			ft_strjoin("can't read that file : ", cpy->str)));
+			(shell()->error = ft_strjoin("can't read that file : ", cpy->str));
 			return (0);
 		}
 		if (cpy->type == FD_IN && \
 		(stat(cpy->str, &status) != -1) && (S_ISDIR(status.st_mode)))
 		{
-			(shell()->error = ft_strdup(\
-			ft_strjoin("is a directory : ", cpy->str)));
+			(shell()->error = ft_strjoin("is a directory : ", cpy->str));
 			return (0);
 		}
 		cpy = cpy->next;

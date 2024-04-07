@@ -6,21 +6,21 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 20:53:43 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/06 05:12:04 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/07 19:20:32 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static int redir(char **input, char *new_input , int *a)
+static int	redir(char **input, char *new_input , int *a)
 {
-	int i;
+	int	i;
 	
 	i = 0;
-	if(input[0][0] == '<' || input[0][0] == '>' || input[0][0] == '|')
+	if (input[0][0] == '<' || input[0][0] == '>' || input[0][0] == '|')
 	{
 		i = 1;
-		if(input[0][1] == '<' || input[0][1] == '>')
+		if (input[0][1] == '<' || input[0][1] == '>')
 			i++;
 		new_input[a[0]++] = '\2';
 		if (input[0][0] == '|')
@@ -30,19 +30,19 @@ static int redir(char **input, char *new_input , int *a)
 			new_input[a[0]++] = input[0][1];
 		new_input[a[0]++] = '\2';
 		input[0] += i;
-		return 1;
+		return (1);
 	}
-	return 0;
+	return (0);
 }
 
-static void prev_error(char **input, char *new_input, int *a)
+static void	prev_error(char **input, char *new_input, int *a)
 {
-	char *new;
-	int i;
+	char	*new;
+	int		i;
 
 	i = 0;
 	new = ft_itoa(shell()->prev_status);
-	while(new[i])
+	while (new[i])
 	{
 		new_input[a[0]++] = new[i];
 		i++;
@@ -51,54 +51,53 @@ static void prev_error(char **input, char *new_input, int *a)
 	input[0] += 2;
 }
 
-char *expand_env(char *expand)
+char	*expand_env(char *expand)
 {
-	int i;
-	char *new;
+	int		i;
+	char	*new;
 
 	i = 0;
 	new = NULL;
-	// problema aqui algures com leaks
-	while(shell()->env[i])
+	while (shell()->env[i])
 	{
-		if(!ft_strncmp(shell()->env[i], expand, ft_strlen(expand)))
+		if (!ft_strncmp(shell()->env[i], expand, ft_strlen(expand)))
 		{
 			new = ft_substr(shell()->env[i], ft_strlen(expand) + 1, ft_strlen(shell()->env[i]) - (ft_strlen(expand)));
-			return new;
+			return (new);
 		}
 		i++;
 	}
-	return new;
+	return (new);
 }
 
-void expand(char **input, char *new_input, int *a)
+void	expand(char **input, char *new_input, int *a)
 {
-	char *expand;
-	char *new;
-	int i;
-	int b;
+	char	*expand;
+	char	*new;
+	int		i;
+	int		b;
 	
 	i = 0;
 	b = 1;
 	new = NULL;
 	expand = ft_calloc(sizeof(char), (ft_strlen(*input) * 2));
-	while(input[0][b])
+	while (input[0][b])
 	{
-		if(input[0][1] == '?')
+		if (input[0][1] == '?')
 		{
 			prev_error(input, new_input, a);
 			free(expand);
 			return ;
 		}
-		if(input[0][b] == ' ' || input[0][b] == '\"')
+		if (input[0][b] == ' ' || input[0][b] == '\"')
 			break ;
 		expand[i++] = input[0][b++];
 	}
 	new = expand_env(expand);
 	free(expand);
-	if(!new)
+	if (!new)
 		return ;
-	while(*new)
+	while (*new)
 	{
 		new_input[a[0]++] = *new;
 		new++;
@@ -106,47 +105,47 @@ void expand(char **input, char *new_input, int *a)
 	input[0] += b;
 }
 
-char *organize_input(char *input)
+void	process_character(char *input, char *new_input, int *a, char *flag) 
 {
-	char flag;
-	char *new_input;
-	int a;
-
-	a = 0;
-	flag = 0;
-	new_input = ft_calloc(sizeof(char),  (ft_strlen(input) * 3));
 	while(*input)
 	{
-		if((*input == '\"' || *input == '\'') && flag == 0)
+		if (*input == '\"' || *input == '\'') 
 		{
-			flag = *input;
+			flag[0] = *input;
 			input++;
 		}
-		else if(*input == flag)
+		else if (*input == flag[0])
 		{
 			flag = 0;
 			input++;
 		}
-		if(flag != '\'' && *input == '$')
-		{
-			expand(&input, new_input, &a);
+		else if (flag[0] != '\'' && *input == '$')
+			expand(&input, new_input, a);
+		else if (flag[0] == 0 && redir(&input, new_input, a))
 			continue ;
-		}
-		if(flag == 0 && redir(&input, new_input, &a))
-			continue ;
-		else if(*input == ' ' && flag == 0)
+		else if (*input == ' ' && flag[0] == 0)
 			*input = '\2';
-		if(*input)
-			new_input[a++] = *input++;
+		if (*input)
+			new_input[a[0]++] = *input++;
 	}
-	if(flag != 0)
-	{
-		free(new_input);
-		shell()->error = ft_strdup("syntax error");
-		return NULL;
-	}
-	new_input[a++] = '\2';
-	new_input[a] = '\0';
-	return new_input;
 }
-	
+
+char *organize_input(char *input) 
+{
+    char flag = 0;
+    char *new_input;
+    int a;
+
+	a = 0;
+	new_input = ft_calloc(sizeof(char), (ft_strlen(input) * 3));
+    process_character(input, new_input, &a, &flag);
+    if (flag != 0) 
+	{
+        free(new_input);
+        shell()->error = ft_strdup("syntax error");
+        return (NULL);
+    }
+    new_input[a++] = '\2';
+    new_input[a] = '\0';
+    return (new_input);
+}

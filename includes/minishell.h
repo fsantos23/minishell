@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:22:38 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/06 17:14:14 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/07 18:01:21 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ int         iswhitespace(char *input);
 int	        check_ins(t_redir *redir);
 t_type	    cmd_type(char **arg);
 int         bs(t_redir *cpy);
+void        second_handler(int num);
 
 
 
