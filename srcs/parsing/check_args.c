@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 16:47:44 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/07 19:19:20 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/07 22:10:15 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,9 @@ t_cmd	*create_tmp(char *args, t_cmd *head)
 	tmp = create_cmd(args);
 	tmp->pip[0] = 0;
 	tmp->pip[1] = 1;
-	tmp->path = search_path(shell()->env, tmp->args[0]);
 	tmp->type = cmd_type(tmp->args);
+	if (tmp->type == CMD)
+		tmp->path = search_path(shell()->env, tmp->args[0]);
 	return (tmp);
 }
 

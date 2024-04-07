@@ -24,7 +24,8 @@ SRCS		=	$(SRCS_DIR)/main.c \
 				$(PARS_DIR)/error.c \
 				$(PARS_DIR)/free.c \
 				$(PARS_DIR)/path.c \
-				$(PARS_DIR)/type.c
+				$(PARS_DIR)/type.c \
+				$(PARS_DIR)/organize2.c 
 
 OBJS		=	$(subst $(SRCS_DIR), $(OBJS_DIR), $(SRCS:.c=.o))
 

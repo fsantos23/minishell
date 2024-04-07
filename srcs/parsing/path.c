@@ -6,11 +6,13 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 20:32:19 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/06 16:05:59 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/07 22:08:57 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+//done
 
 char	*check_cmd(char *cmd)
 {
@@ -38,12 +40,13 @@ char	**search_env(char **env)
 		i++;
 	}
 	if (!path)
-		perror("env search error\n");
-	else
 	{
-		paths = ft_split(path, ':');
-		free(path);
+		shell()->status = 1;
+		shell()->error = ft_strdup("env search error");
+		return (NULL);
 	}
+	paths = ft_split(path, ':');
+	free(path);
 	return (paths);
 }
 
@@ -58,6 +61,8 @@ char	*search_path(char **env, char *cmd)
 	if (ft_strchr(cmd, '/') != NULL)
 		return (check_cmd(cmd));
 	paths = search_env(env);
+	if (!paths)
+		return (NULL);
 	while (paths[i])
 	{
 		part = ft_join(paths[i], "/", cmd);

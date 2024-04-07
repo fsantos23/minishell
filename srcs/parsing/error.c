@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 13:12:25 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/07 19:15:37 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/07 22:12:37 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,12 @@ int	check_cmds(t_cmd *cmd)
 	{
 		if (!tmp->path && tmp->type == CMD)
 		{
-			(shell()->error = ft_strjoin(tmp->args[0], " : command not found"));
-			shell()->status = 127;
+			if (!shell()->error)
+			{
+				shell()->error = ft_strjoin(tmp->args[0], \
+				" : command not found");
+				shell()->status = 127;
+			}
 			return (0);
 		}
 		tmp = tmp->next;

@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 16:55:25 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/03 17:00:46 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/07 15:00:07 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 
 void	get_pwd(char ***env)
 {
-    char	buf[PATH_MAX + 1];
-    char	*cmd;
+	char	buf[PATH_MAX + 1];
+	char	*cmd;
 
-    getcwd(buf, sizeof(buf));
-    cmd = ft_strjoin("PWD=", buf);
-    update_env(env, cmd);
-    if (find_variable(*env, "OLDPWD") == -1)
-        update_env(env, "OLDPWD");
-    free(cmd);
+	getcwd(buf, sizeof(buf));
+	cmd = ft_strjoin("PWD=", buf);
+	update_env(env, cmd);
+	if (find_variable(*env, "OLDPWD") == -1)
+		update_env(env, "OLDPWD");
+	free(cmd);
 }
 
 void	update_shlvl(char ***env, char *value)

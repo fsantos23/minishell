@@ -6,16 +6,18 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 20:53:43 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/07 19:20:32 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/07 22:25:04 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static int	redir(char **input, char *new_input , int *a)
+//done
+
+static int	redir(char **input, char *new_input, int *a)
 {
 	int	i;
-	
+
 	i = 0;
 	if (input[0][0] == '<' || input[0][0] == '>' || input[0][0] == '|')
 	{
@@ -35,91 +37,70 @@ static int	redir(char **input, char *new_input , int *a)
 	return (0);
 }
 
-static void	prev_error(char **input, char *new_input, int *a)
+int	itenerate_input(char **input, char **expand, \
+char *new_input, int *a)
 {
-	char	*new;
-	int		i;
+	int	i;
+	int	b;
 
 	i = 0;
-	new = ft_itoa(shell()->prev_status);
-	while (new[i])
+	b = 1;
+	while (input[0][b])
 	{
-		new_input[a[0]++] = new[i];
-		i++;
-	}
-	free(new);
-	input[0] += 2;
-}
-
-char	*expand_env(char *expand)
-{
-	int		i;
-	char	*new;
-
-	i = 0;
-	new = NULL;
-	while (shell()->env[i])
-	{
-		if (!ft_strncmp(shell()->env[i], expand, ft_strlen(expand)))
+		if (input[0][1] == '?')
 		{
-			new = ft_substr(shell()->env[i], ft_strlen(expand) + 1, ft_strlen(shell()->env[i]) - (ft_strlen(expand)));
-			return (new);
+			prev_error(input, new_input, a);
+			return (0);
 		}
-		i++;
+		if (input[0][b] == ' ' || input[0][b] == '\"')
+			break ;
+		expand[0][i++] = input[0][b++];
 	}
-	return (new);
+	return (b);
 }
 
 void	expand(char **input, char *new_input, int *a)
 {
 	char	*expand;
 	char	*new;
-	int		i;
 	int		b;
-	
+	int		i;
+
 	i = 0;
-	b = 1;
+	b = 0;
 	new = NULL;
 	expand = ft_calloc(sizeof(char), (ft_strlen(*input) * 2));
-	while (input[0][b])
+	b = itenerate_input(input, &expand, new_input, a);
+	if (b == 0)
 	{
-		if (input[0][1] == '?')
-		{
-			prev_error(input, new_input, a);
-			free(expand);
-			return ;
-		}
-		if (input[0][b] == ' ' || input[0][b] == '\"')
-			break ;
-		expand[i++] = input[0][b++];
+		free(expand);
+		return ;
 	}
 	new = expand_env(expand);
 	free(expand);
 	if (!new)
 		return ;
-	while (*new)
-	{
-		new_input[a[0]++] = *new;
-		new++;
-	}
+	while (new[i])
+		new_input[a[0]++] = new[i++];
+	free(new);
 	input[0] += b;
 }
 
-void	process_character(char *input, char *new_input, int *a, char *flag) 
+void	process_character(char *input, char *new_input, int *a, char *flag)
 {
-	while(*input)
+	while (*input)
 	{
-		if (*input == '\"' || *input == '\'') 
+		if ((*input == '\"' || *input == '\'') && flag[0] == 0)
 		{
 			flag[0] = *input;
 			input++;
 		}
-		else if (*input == flag[0])
+		else if (flag[0] == *input)
 		{
-			flag = 0;
+			flag[0] = 0;
 			input++;
 		}
-		else if (flag[0] != '\'' && *input == '$')
+		else if (flag[0] != '\'' && *input == '$' && input[1])
 			expand(&input, new_input, a);
 		else if (flag[0] == 0 && redir(&input, new_input, a))
 			continue ;
@@ -130,22 +111,24 @@ void	process_character(char *input, char *new_input, int *a, char *flag)
 	}
 }
 
-char *organize_input(char *input) 
+char	*organize_input(char *input)
 {
-    char flag = 0;
-    char *new_input;
-    int a;
+	char	flag;
+	char	*new_input;
+	int		a;
 
 	a = 0;
-	new_input = ft_calloc(sizeof(char), (ft_strlen(input) * 3));
-    process_character(input, new_input, &a, &flag);
-    if (flag != 0) 
+	flag = 0;
+	new_input = ft_calloc(sizeof(char), (ft_strlen(input) * 100));
+	process_character(input, new_input, &a, &flag);
+	if (flag != 0)
 	{
-        free(new_input);
-        shell()->error = ft_strdup("syntax error");
-        return (NULL);
-    }
-    new_input[a++] = '\2';
-    new_input[a] = '\0';
-    return (new_input);
+		printf("%c\n", flag);
+		free(new_input);
+		shell()->error = ft_strdup("syntax error");
+		return (NULL);
+	}
+	new_input[a++] = '\2';
+	new_input[a] = '\0';
+	return (new_input);
 }

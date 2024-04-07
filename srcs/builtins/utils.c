@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 15:53:23 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/03 14:17:19 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/07 14:59:27 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,55 +14,55 @@
 
 void	rm_str_from_array(char ***array, int index)
 {
-    char	**new_array;
-    int		len;
-    int		i;
+	char	**new_array;
+	int		len;
+	int		i;
 
-    if (!(*array))
-        return ;
-    else
-    {
-        len = 0;
-        while ((*array)[len])
-            len++;
-        new_array = malloc(sizeof(char *) * len);
-        if (!new_array)
-            return ;
-        i = -1;
-        len = 0;
-        while ((*array)[++i])
-        {
-            if (i != index)
-                new_array[len++] = ft_strdup((*array)[i]);
-        }
-        new_array[len] = NULL;
-        free_array(*array);
-        *array = new_array;
-    }
+	if (!(*array))
+		return ;
+	else
+	{
+		len = 0;
+		while ((*array)[len])
+			len++;
+		new_array = malloc(sizeof(char *) * len);
+		if (!new_array)
+			return ;
+		i = -1;
+		len = 0;
+		while ((*array)[++i])
+		{
+			if (i != index)
+				new_array[len++] = ft_strdup((*array)[i]);
+		}
+		new_array[len] = NULL;
+		free_array(*array);
+		*array = new_array;
+	}
 }
 
-void add_str_to_array(char ***array, char *str)
+void	add_str_to_array(char ***array, char *str)
 {
-    int len;
-    len = 0;
+	int		len;
+	char	**new_array;
+	int		i;
 
-    while ((*array)[len])
-        len++;
-
-    char **new_array = malloc(sizeof(char *) * (len + 2));
-    if (!new_array)
-        return;
-
-    int i = 0;
-    while(i < len) {
-        new_array[i] = strdup((*array)[i]);
-        i++;
-    }
-
-    new_array[len] = ft_strdup(str);
-    new_array[len + 1] = NULL;
-    free_array(*array);
-    *array = new_array;
+	len = 0;
+	while ((*array)[len])
+		len++;
+	new_array = malloc(sizeof(char *) * (len + 2));
+	if (!new_array)
+		return ;
+	i = 0;
+	while (i < len)
+	{
+		new_array[i] = strdup((*array)[i]);
+		i++;
+	}
+	new_array[len] = ft_strdup(str);
+	new_array[len + 1] = NULL;
+	free_array(*array);
+	*array = new_array;
 }
 
 char	*get_env_var(char *str)
@@ -97,16 +97,16 @@ char	**copy_array(char **array)
 
 int	ft_strcmp(char *s1, char *s2)
 {
-    int	i;
+	int	i;
 
-    i = 0;
-    if (!s1 || !s2)
-        return (-1);
-    while (s1[i] && s2[i])
-    {
-        if (s1[i] != s2[i])
-            break ;
-        i++;
-    }
-    return (s1[i] - s2[i]);
+	i = 0;
+	if (!s1 || !s2)
+		return (-1);
+	while (s1[i] && s2[i])
+	{
+		if (s1[i] != s2[i])
+			break ;
+		i++;
+	}
+	return (s1[i] - s2[i]);
 }

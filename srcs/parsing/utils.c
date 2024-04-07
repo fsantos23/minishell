@@ -6,11 +6,13 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 17:41:49 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/07 19:10:28 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/07 20:12:42 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+//done
 
 t_sh	*shell(void)
 {
@@ -19,64 +21,63 @@ t_sh	*shell(void)
 	return (&shell);
 }
 
-int check_exit(void)
+int	check_exit(void)
 {
-    if ((shell()->status == 0 || shell()->status == 130) && shell()->prompt == true)
-    {
-        shell()->prev_status = shell()->status;
-        shell()->status = 0;
-        return 1;
-    }
-    if (shell()->prompt == false)
-    {
-        if(shell()->error)
-        {
-            printf("%s\n", shell()->error);
-            free(shell()->error);
-        }
-        shell()->lvl--;
-        return 0;
-    }
-    else if (shell()->prompt == true)
-    {
-        error_handler();
-        return 1;
-    }
-    return 0;
+	if ((shell()->status == 0 || shell()->status == 130) \
+	&& shell()->prompt == true)
+	{
+		shell()->prev_status = shell()->status;
+		shell()->status = 0;
+		return (1);
+	}
+	if (shell()->prompt == false)
+	{
+		if (shell()->error)
+		{
+			printf("%s\n", shell()->error);
+			free(shell()->error);
+		}
+		shell()->lvl--;
+		return (0);
+	}
+	else if (shell()->prompt == true)
+	{
+		error_handler();
+		return (1);
+	}
+	return (0);
 }
 
-void handler(int num)
+void	handler(int num)
 {
-    if(num == SIGINT)
-    {
-        printf("\n");
-        rl_on_new_line();
-        rl_replace_line("", 0);
-        rl_redisplay();
-        shell()->status = 130;
-        check_exit();
-    }
-    else if(num == SIGQUIT)
-    {
-        printf("Quit core dumped\n");
-    }
+	if (num == SIGINT)
+	{
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+		shell()->status = 130;
+		check_exit();
+	}
+	else if (num == SIGQUIT)
+		printf("Quit core dumped\n");
 }
 
-int size_args(char **args)
+int	size_args(char **args)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(args[i])
+	while (args[i])
 		i++;
-	return i;
+	return (i);
 }
 
-int close_fd(int in, int out)
+int	close_fd(int in, int out)
 {
-    if (in != 0)
-        close(in);
-    if (out != 1)
-        close(out);
-    return (1);
+	if (in != 0)
+		close(in);
+	if (out != 1)
+		close(out);
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 15:50:17 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/06 15:24:48 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/07 18:35:51 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,37 +14,28 @@
 
 void	ft_exit(char **cmd)
 {
-    int i;
-    int a;
+	int	i;
 
-    i = 1;
-    a = 0;
-    while(cmd[i])
-    {
-        a = 0;
-        if(i == 2 && !shell()->error)
-        {
-            shell()->error = ft_strdup("too many arguments");
-            shell()->status = 1;
-            return ;
-        }
-        while(cmd[i][a] && i < 2)
-        {
-            if((cmd[i][0] == '-' || cmd[i][0] == '+') && a == 0)
-                a++;
-            if(!ft_isdigit(cmd[i][a]))
-            {
-                shell()->error = ft_strdup("not a valid argument");
-                break ;
-            }
-            a++;
-        }
-        i++;
-    }
-    if(cmd[1])
-        shell()->exit_code = ft_atoi(cmd[1]);
-    else
-        shell()->exit_code = 0;
-    shell()->prompt = false;
-    printf("exit\n");
+	i = -1;
+	while (cmd && cmd[1] && cmd[1][++i])
+	{
+		if (i == 0 && (cmd[1][0] == '+' || cmd[1][0] == '-'))
+			continue ;
+		else if (!ft_isdigit(cmd[1][i]))
+		{
+			shell()->error = ft_strdup("Exit: numeric argument required");
+			shell()->status = 1;
+			return ;
+		}
+		else if (cmd[1][i + 1] == '\0' && cmd[2])
+		{
+			shell()->error = ft_strdup("Exit: too many arguments");
+			shell()->status = 1;
+			return ;
+		}
+		else if (cmd[1][i + 1] == '\0')
+			shell()->exit_code = ft_atoi(cmd[1]);
+	}
+	printf("exit\n");
+	shell()->prompt = false;
 }

@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 16:57:53 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/06 03:31:22 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/07 14:39:29 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,10 +77,10 @@ void	print_exp(char **sorted_env)
 	}
 }
 
-void export(char **cmd)
+void	export(char **cmd)
 {
-	char **export;
-	int i;
+	char	**export;
+	int		i;
 
 	i = 0;
 	if (!cmd[1])
@@ -99,9 +99,8 @@ void export(char **cmd)
 				shell()->status = 2;
 				return ;
 			}
-			else {
-                update_env(&shell()->env, cmd[i]);
-            }
+			else
+				update_env(&shell()->env, cmd[i]);
 		}
 	}
 }
