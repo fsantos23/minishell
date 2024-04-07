@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:24:22 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/07 19:09:49 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/07 22:28:53 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int	main(int argc, char **argv, char **env)
 	{
 		create_general(shell(), env);
 		init_shell();
+		printf("exit\n");
 		free_array(shell()->env);
 		return (shell()->exit_code);
 	}

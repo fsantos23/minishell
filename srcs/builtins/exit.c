@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 15:50:17 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/07 18:35:51 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/07 22:28:39 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,5 @@ void	ft_exit(char **cmd)
 		else if (cmd[1][i + 1] == '\0')
 			shell()->exit_code = ft_atoi(cmd[1]);
 	}
-	printf("exit\n");
 	shell()->prompt = false;
 }

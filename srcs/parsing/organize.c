@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 20:53:43 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/07 22:25:04 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/07 22:27:41 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,6 @@ char	*organize_input(char *input)
 	process_character(input, new_input, &a, &flag);
 	if (flag != 0)
 	{
-		printf("%c\n", flag);
 		free(new_input);
 		shell()->error = ft_strdup("syntax error");
 		return (NULL);
