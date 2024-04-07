@@ -83,13 +83,13 @@ fclean:		clean
 
 re:			fclean all
 
-r:
-	make re  > /dev/null && clear && ./$(NAME)
+#r:
+#	make re  > /dev/null && clear && ./$(NAME)
 
-cl: 
-	clear && make r
+#cl: 
+#	clear && make r
 
-valgrind:
-	make re  > /dev/null && valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./$(NAME)
+#valgrind:
+#	make re  > /dev/null && valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./$(NAME)
 
 .PHONY:		all clean fclean re
