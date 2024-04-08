@@ -19,6 +19,7 @@ int	bs(t_redir *cpy)
 	if (cpy->type == FD_IN && (access(cpy->str, F_OK) != 0))
 	{
 		(shell()->error = ft_strjoin("no such file or directory : ", cpy->str));
+		shell()->status = 1;
 		return (0);
 	}
 	return (1);
@@ -40,19 +41,16 @@ int	check_out(t_redir *out)
 	t_redir	*cpy;
 
 	cpy = out;
-	while (cpy)
+	if (access(cpy->str, F_OK) != 0)
 	{
-		if (access(cpy->str, F_OK) != 0)
-		{
-			cpy = cpy->next;
-			continue ;
-		}
-		if (access(cpy->str, F_OK) == 0 && (access(cpy->str, W_OK) != 0))
-		{
-			(shell()->error = ft_strjoin("can't write to that file : ", cpy->str));
-			return (0);
-		}
 		cpy = cpy->next;
+		return (1);
+	}
+	if (access(cpy->str, F_OK) == 0 && (access(cpy->str, W_OK) != 0))
+	{
+		(shell()->error = ft_strjoin("can't write to that file : ", cpy->str));
+		shell()->status = 1;
+		return (0);
 	}
 	return (1);
 }

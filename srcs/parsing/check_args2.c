@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:05:26 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/08 11:07:16 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/08 12:02:50 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,22 +80,20 @@ int	check_ins(t_redir *redir)
 	struct stat	status;
 
 	cpy = redir;
-	while (cpy)
+	if (!bs(cpy))
+		return (0);
+	if (cpy->type == FD_IN && (access(cpy->str, R_OK) != 0))
 	{
-		if (!bs(cpy))
-			return (0);
-		if (cpy->type == FD_IN && (access(cpy->str, R_OK) != 0))
-		{
-			(shell()->error = ft_strjoin("can't read that file : ", cpy->str));
-			return (0);
-		}
-		if (cpy->type == FD_IN && \
-		(stat(cpy->str, &status) != -1) && (S_ISDIR(status.st_mode)))
-		{
-			(shell()->error = ft_strjoin("is a directory : ", cpy->str));
-			return (0);
-		}
-		cpy = cpy->next;
+		(shell()->error = ft_strjoin("can't read that file : ", cpy->str));
+		shell()->status = 1;
+		return (0);
+	}
+	if (cpy->type == FD_IN && \
+	(stat(cpy->str, &status) != -1) && (S_ISDIR(status.st_mode)))
+	{
+		(shell()->error = ft_strjoin("is a directory : ", cpy->str));
+		shell()->status = 1;
+		return (0);
 	}
 	return (1);
 }

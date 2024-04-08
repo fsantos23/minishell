@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 20:53:43 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/08 11:18:17 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/08 12:26:20 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,16 +94,20 @@ void	process_character(char *input, char *new_input, int *a, char *flag)
 	{
 		if ((*input == '\"' || *input == '\'') && flag[0] == 0)
 		{
-			flag[0] = *input;
-			input++;
+			flag[0] = *input++;
+			continue ;
 		}
 		else if (flag[0] == *input)
 		{
 			flag[0] = 0;
 			input++;
+			continue ;
 		}
 		else if (flag[0] != '\'' && *input == '$' && input[1])
+		{
 			expand(&input, new_input, a);
+			continue ;
+		}
 		else if (flag[0] == 0 && redir(&input, new_input, a))
 			continue ;
 		else if (*input == ' ' && flag[0] == 0)

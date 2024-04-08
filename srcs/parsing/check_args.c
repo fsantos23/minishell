@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 16:47:44 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/08 11:07:45 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/08 11:36:06 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,9 +131,6 @@ void	create_list(char *input)
 	free_array(args);
 	if (!cmd)
 		return ;
-	if (check_ins(cmd->ins) && check_out(cmd->outs))
-		execute_cmds(cmd);
-	else
-		shell()->status = 1;
+	execute_cmds(cmd);
 	free_everything(cmd);
 }

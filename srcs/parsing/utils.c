@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 17:41:49 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/08 10:22:27 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/08 12:09:28 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,9 @@ int	size_args(char **args)
 
 int	close_fd(int in, int out)
 {
-	if (in != 0)
+	if (in != 0 && in != -2)
 		close(in);
-	if (out != 1)
+	if (out != 1 && in != -2)
 		close(out);
 	return (1);
 }

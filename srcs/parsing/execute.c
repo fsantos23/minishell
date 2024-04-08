@@ -53,12 +53,14 @@ static void	execute_cmd(int in, int out, t_cmd *cmd)
 
 static int	execute_single_command(int in, int out, t_cmd *cmd)
 {
-	cmd->fd_in = execute_redir_all(cmd->ins);
-	cmd->fd_out = execute_redir_all(cmd->outs);
-	if (cmd->fd_in != -1)
-		in = cmd->fd_in;
-	if (cmd->fd_out != -1)
+	cmd->fd_in = execute_redir_all(cmd->ins, cmd);
+	cmd->fd_out = execute_redir_all(cmd->outs, cmd);
+	if (cmd->fd_in == -2 || cmd->fd_out == -2)
+			return (-2);
+	if (cmd->fd_out != -1 && cmd->fd_out != -2)
 		out = cmd->fd_out;
+	if (cmd->fd_in != -1 && cmd->fd_in != -2)
+		in = cmd->fd_in;
 	if (cmd->type == BUILTIN)
 		execute_builtins(in, out, cmd);
 	else
@@ -81,10 +83,9 @@ static void	execute_pipe(t_cmd *cmd)
 			perror("pipe error");
 			exit(EXIT_FAILURE);
 		}
-		
 		out = cmd->pip[1];
 		in = execute_single_command(in, out, cmd);
-		cmd = cmd->next;
+		cmd = cmd->next;	
 	}
 	while (tmp)
 	{

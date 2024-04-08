@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:22:38 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/08 11:27:26 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/08 12:45:43 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void		print_cmd(t_cmd *cmd);
 void		execute_cmds(t_cmd *cmd);
 void		print_redir(t_redir *redir);
 void		init_shell(void);
-int			execute_redir_all(t_redir *redir);
+int			execute_redir_all(t_redir *redir, t_cmd *cmd);
 int			check_cmds(t_cmd *cmd);
 int			close_fd(int in, int out);
 void		handler(int num);
