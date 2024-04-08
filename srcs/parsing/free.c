@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 20:32:59 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/08 11:04:19 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/08 17:02:55 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	free_everything(t_cmd *cmd)
 			if (cmd->path)
 				free(cmd->path);
 		}
-			free_array(cmd->args);
+		free_array(cmd->args);
 		if (cmd->ins != NULL)
 			free_redir(cmd->ins);
 		if (cmd->outs != NULL)

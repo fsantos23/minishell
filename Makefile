@@ -25,7 +25,9 @@ SRCS		=	$(SRCS_DIR)/main.c \
 				$(PARS_DIR)/free.c \
 				$(PARS_DIR)/path.c \
 				$(PARS_DIR)/type.c \
-				$(PARS_DIR)/organize2.c 
+				$(PARS_DIR)/organize2.c \
+				$(PARS_DIR)/sigs.c \
+				$(PARS_DIR)/heredoc.c 
 
 OBJS		=	$(subst $(SRCS_DIR), $(OBJS_DIR), $(SRCS:.c=.o))
 
@@ -89,7 +91,6 @@ re:			fclean all
 #cl: 
 #	clear && make r
 
-valgrind:
-	make re  > /dev/null && valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./$(NAME)
+#valgrind:make re  > /dev/null && valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./$(NAME)
 
 .PHONY:		all clean fclean re

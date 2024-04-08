@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 16:47:44 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/08 11:36:06 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/08 20:02:34 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,12 @@ t_cmd	*create_cmd(char *str)
 		redir = create_redir(i, cmd);
 		if (redir)
 		{
+			if (!redir->str)
+			{
+				shell()->error = ft_strdup("syntax error");
+				shell()->status = 1;
+				return (NULL);
+			}
 			process_redirections(cmd, redir, &redir_in_end, &redir_out_end);
 			i = 0;
 		}
@@ -75,6 +81,8 @@ t_cmd	*create_tmp(char *args, t_cmd *head)
 		return (NULL);
 	}
 	tmp = create_cmd(args);
+	if (!tmp)
+		return (NULL);
 	tmp->pip[0] = 0;
 	tmp->pip[1] = 1;
 	tmp->type = cmd_type(tmp->args);
@@ -96,7 +104,7 @@ t_cmd	*return_cmd(char **args)
 	tmp = NULL;
 	while (args[i])
 	{
-		tmp = create_tmp(args[i], head);
+		tmp = create_tmp(args[i++], head);
 		if (!tmp)
 			return (NULL);
 		if (!head)
@@ -108,7 +116,6 @@ t_cmd	*return_cmd(char **args)
 				cmd = cmd->next;
 			cmd->next = tmp;
 		}
-		i++;
 	}
 	return (head);
 }

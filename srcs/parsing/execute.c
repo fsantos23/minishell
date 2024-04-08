@@ -14,24 +14,14 @@
 
 //done
 
-static void	check_sigs(char *cmd)
+static void	check_sigs(void)
 {
-	if (!ft_strncmp(cmd, "./minishell", 11))
-	{
-		shell()->lvl++;
-		signal(SIGINT, SIG_IGN);
-		signal(SIGQUIT, SIG_IGN);
-	}
-	else
-	{
-		signal(SIGINT, second_handler);
-		signal(SIGQUIT, second_handler);
-	}
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 static void	execute_cmd(int in, int out, t_cmd *cmd)
 {
-	check_sigs(cmd->args[0]);
 	cmd->pid = fork();
 	if (cmd->pid < 0)
 	{
@@ -40,6 +30,8 @@ static void	execute_cmd(int in, int out, t_cmd *cmd)
 	}
 	else if (cmd->pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		dup2(in, STDIN_FILENO);
 		dup2(out, STDOUT_FILENO);
 		close_fd(in, out);
@@ -56,7 +48,7 @@ static int	execute_single_command(int in, int out, t_cmd *cmd)
 	cmd->fd_in = execute_redir_all(cmd->ins, cmd);
 	cmd->fd_out = execute_redir_all(cmd->outs, cmd);
 	if (cmd->fd_in == -2 || cmd->fd_out == -2)
-			return (-2);
+		return (-2);
 	if (cmd->fd_out != -1 && cmd->fd_out != -2)
 		out = cmd->fd_out;
 	if (cmd->fd_in != -1 && cmd->fd_in != -2)
@@ -76,22 +68,23 @@ static void	execute_pipe(t_cmd *cmd)
 
 	tmp = cmd;
 	in = dup(STDIN_FILENO);
+	check_sigs();
 	while (cmd)
 	{
-		if (cmd->next && pipe(cmd->pip) < 0)
-		{
-			perror("pipe error");
-			exit(EXIT_FAILURE);
-		}
+		create_pipe(cmd);
 		out = cmd->pip[1];
 		in = execute_single_command(in, out, cmd);
-		cmd = cmd->next;	
+		if (in == -2)
+			break ;
+		cmd = cmd->next;
 	}
 	while (tmp)
 	{
-		waitpid(tmp->pid, NULL, 0);
+		handle_wait_child(tmp);
 		tmp = tmp->next;
 	}
+	signal(SIGINT, handler);
+	signal(SIGQUIT, handler);
 }
 
 void	execute_cmds(t_cmd *cmd)

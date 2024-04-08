@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:24:22 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/07 22:28:53 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/08 16:20:35 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	create_general(t_sh *shell, char **env)
 	shell->env = get_env(env);
 	shell->lvl = 0;
 	shell->error = NULL;
+	shell->heredoc = 0;
 }
 
 void	init_shell(void)
@@ -72,6 +73,8 @@ int	main(int argc, char **argv, char **env)
 		init_shell();
 		printf("exit\n");
 		free_array(shell()->env);
+		close(STDIN_FILENO);
+		close(STDOUT_FILENO);
 		return (shell()->exit_code);
 	}
 	return (0);

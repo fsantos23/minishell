@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:22:38 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/08 12:45:43 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/08 17:10:43 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ typedef struct s_sh
 	char	**env;
 	char	*error;
 	int		lvl;
+	int		heredoc;
 }	t_sh;
 
 t_sh		*shell(void);
@@ -113,6 +114,14 @@ void		second_handler(int num);
 void		prev_error(char **input, char *new_input, int *a);
 char		*expand_env(char *expand);
 int			check_out(t_redir *out);
+void		expand(char **input, char *new_input, int *a);
+void		handle_wait_child(t_cmd *cmd);
+void		create_pipe(t_cmd *cmd);
+int			execute_heredoc(t_redir *redir, t_cmd *cmd);
+int			handle_parent_process(int pid, int heredoc[2]);
+void		handle_child_process(t_redir *redir, int heredoc[2], t_cmd *cmd);
+void		expand_heredoc(char **str, int heredoc[2]);
+void		handle(int num);
 
 //----------pipex------------//
 

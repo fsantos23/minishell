@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 17:41:49 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/08 12:09:28 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/08 16:19:59 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ int	check_exit(void)
 			printf("%s\n", shell()->error);
 			free(shell()->error);
 		}
-		shell()->lvl--;
 		return (0);
 	}
 	else if (shell()->prompt == true)

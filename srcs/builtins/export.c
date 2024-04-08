@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 16:57:53 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/07 14:39:29 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/08 16:33:11 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	check_export_conditions(char *str)
 	i = 0;
 	while (str[++i] && str[i] != '=')
 	{
-		if (!(ft_isalpha(str[i]) || ft_isdigit(str[i] || str[i] == '_')))
+		if (!(ft_isalnum(str[i]) || str[i] == '_'))
 			return (0);
 	}
 	return (1);
@@ -95,9 +95,8 @@ void	export(char **cmd)
 		{
 			if (!check_export_conditions(cmd[i]))
 			{
-				shell()->error = ft_strdup("not a valid identifier");
+				write(2, "not a valid identifier\n", 23);
 				shell()->status = 2;
-				return ;
 			}
 			else
 				update_env(&shell()->env, cmd[i]);

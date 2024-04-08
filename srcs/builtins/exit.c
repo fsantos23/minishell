@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 15:50:17 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/07 22:28:39 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/08 16:29:27 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void	ft_exit(char **cmd)
 		else if (!ft_isdigit(cmd[1][i]))
 		{
 			shell()->error = ft_strdup("Exit: numeric argument required");
-			shell()->status = 1;
-			return ;
+			shell()->exit_code = 2;
+			break ;
 		}
 		else if (cmd[1][i + 1] == '\0' && cmd[2])
 		{
