@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:22:38 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/07 21:24:42 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/08 11:27:26 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ int			bs(t_redir *cpy);
 void		second_handler(int num);
 void		prev_error(char **input, char *new_input, int *a);
 char		*expand_env(char *expand);
+int			check_out(t_redir *out);
 
 //----------pipex------------//
 

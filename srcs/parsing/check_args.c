@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 16:47:44 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/07 22:10:15 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/08 11:07:45 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ t_cmd	*return_cmd(char **args)
 	tmp = NULL;
 	while (args[i])
 	{
-		tmp = create_tmp(args[i++], head);
+		tmp = create_tmp(args[i], head);
 		if (!tmp)
 			return (NULL);
 		if (!head)
@@ -108,6 +108,7 @@ t_cmd	*return_cmd(char **args)
 				cmd = cmd->next;
 			cmd->next = tmp;
 		}
+		i++;
 	}
 	return (head);
 }
@@ -130,7 +131,7 @@ void	create_list(char *input)
 	free_array(args);
 	if (!cmd)
 		return ;
-	if (check_ins(cmd->ins))
+	if (check_ins(cmd->ins) && check_out(cmd->outs))
 		execute_cmds(cmd);
 	else
 		shell()->status = 1;

@@ -81,6 +81,7 @@ static void	execute_pipe(t_cmd *cmd)
 			perror("pipe error");
 			exit(EXIT_FAILURE);
 		}
+		
 		out = cmd->pip[1];
 		in = execute_single_command(in, out, cmd);
 		cmd = cmd->next;

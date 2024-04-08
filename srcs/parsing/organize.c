@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 20:53:43 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/07 22:27:41 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/08 11:18:17 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ char *new_input, int *a)
 
 	i = 0;
 	b = 1;
+	if (ft_isdigit(input[0][b]))
+		return (1);
 	while (input[0][b])
 	{
 		if (input[0][1] == '?')
@@ -52,7 +54,7 @@ char *new_input, int *a)
 			prev_error(input, new_input, a);
 			return (0);
 		}
-		if (input[0][b] == ' ' || input[0][b] == '\"')
+		if (!ft_isalnum(input[0][b]) && input[0][b] != '_')
 			break ;
 		expand[0][i++] = input[0][b++];
 	}

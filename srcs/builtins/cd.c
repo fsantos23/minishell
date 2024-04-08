@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 11:36:39 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/07 13:30:55 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/08 11:19:46 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ void	cd(char **cmd)
 	{
 		if (chdir(cmd[1]) == -1)
 		{
-			shell()->error = ft_strdup("not a valid path");
+			shell()->error = ft_strdup(strerror(errno));
 			shell()->status = 1;
 			return ;
 		}

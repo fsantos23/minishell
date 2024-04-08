@@ -34,3 +34,25 @@ void	second_handler(int num)
 	else if (num == SIGQUIT)
 		printf("Quit core dumped\n");
 }
+
+int	check_out(t_redir *out)
+{
+	t_redir	*cpy;
+
+	cpy = out;
+	while (cpy)
+	{
+		if (access(cpy->str, F_OK) != 0)
+		{
+			cpy = cpy->next;
+			continue ;
+		}
+		if (access(cpy->str, F_OK) == 0 && (access(cpy->str, W_OK) != 0))
+		{
+			(shell()->error = ft_strjoin("can't write to that file : ", cpy->str));
+			return (0);
+		}
+		cpy = cpy->next;
+	}
+	return (1);
+}

@@ -2,7 +2,7 @@ NAME = libft.a
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -Iincludes
+CFLAGS = -Wall -Wextra -Werror -Iincludes -g
 
 SRC_FILES = ft_bzero.c ft_memcpy.c ft_memset.c ft_strlen.c ft_memchr.c ft_memcmp.c ft_memmove.c ft_strdup.c \
 		ft_strtrim.c ft_strlcpy.c ft_strnstr.c ft_strchr.c ft_substr.c ft_strrchr.c ft_split.c ft_calloc.c \

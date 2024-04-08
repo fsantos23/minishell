@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:05:26 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/07 19:17:09 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/08 11:07:16 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ t_redir	*create_redir(int index, t_cmd *cmd)
 		redir = ft_calloc(1, sizeof(t_redir));
 		redir->type = type;
 		redir->str = cmd->args[index + 1];
+		free(cmd->args[index]);
 		cmd->args[index] = 0;
 		if (cmd->args[index + 1] == NULL)
 			return (redir);
