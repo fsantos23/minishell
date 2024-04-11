@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 15:22:38 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/08 17:10:43 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/09 17:38:23 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 
 typedef enum e_type
 {
+	BEGIN,
 	NONE,
 	FD_IN,
 	FD_OUT,
@@ -108,7 +109,7 @@ t_redir		*create_redir(int index, t_cmd *cmd);
 int			close_fd(int in, int out);
 int			iswhitespace(char *input);
 int			check_ins(t_redir *redir);
-t_type		cmd_type(char **arg);
+t_type		cmd_type(t_cmd *cmd);
 int			bs(t_redir *cpy);
 void		second_handler(int num);
 void		prev_error(char **input, char *new_input, int *a);
@@ -122,6 +123,7 @@ int			handle_parent_process(int pid, int heredoc[2]);
 void		handle_child_process(t_redir *redir, int heredoc[2], t_cmd *cmd);
 void		expand_heredoc(char **str, int heredoc[2]);
 void		handle(int num);
+int			is_justredir(char *str);
 
 //----------pipex------------//
 

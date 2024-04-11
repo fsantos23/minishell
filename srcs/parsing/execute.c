@@ -55,7 +55,7 @@ static int	execute_single_command(int in, int out, t_cmd *cmd)
 		in = cmd->fd_in;
 	if (cmd->type == BUILTIN)
 		execute_builtins(in, out, cmd);
-	else
+	else if (cmd->type == CMD)
 		execute_cmd(in, out, cmd);
 	return (cmd->pip[0]);
 }

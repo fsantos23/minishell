@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 17:05:26 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/08 19:56:49 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/09 17:34:50 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,13 +98,13 @@ int	check_ins(t_redir *redir)
 	return (1);
 }
 
-t_type	cmd_type(char **arg)
+t_type	cmd_type(t_cmd *cmd)
 {
 	t_type	type;
 
-	if (!builtins(arg))
+	if (!builtins(cmd->args))
 		type = CMD;
-	else
+	else 
 		type = BUILTIN;
 	return (type);
 }

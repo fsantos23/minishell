@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 16:47:44 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/08 20:02:34 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/09 17:43:57 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ t_cmd	*create_cmd(char *str)
 
 	i = 0;
 	cmd = ft_calloc(1, sizeof(t_cmd));
+	cmd->type = BEGIN;
 	cmd->args = ft_split(str, '\2');
 	redir_in_end = NULL;
 	redir_out_end = NULL;
@@ -53,26 +54,22 @@ t_cmd	*create_cmd(char *str)
 		redir = create_redir(i, cmd);
 		if (redir)
 		{
-			if (!redir->str)
-			{
-				shell()->error = ft_strdup("syntax error");
-				shell()->status = 1;
-				return (NULL);
-			}
 			process_redirections(cmd, redir, &redir_in_end, &redir_out_end);
 			i = 0;
 		}
 		else
 			i++;
 	}
+	if (i == 0 && (cmd->ins || cmd->outs))
+		cmd->type = NONE;
 	return (cmd);
 }
 
 t_cmd	*create_tmp(char *args, t_cmd *head)
 {
 	t_cmd	*tmp;
-
-	if (!args || !iswhitespace(args))
+	
+	if (!args || !iswhitespace(args) || !is_justredir(args))
 	{
 		shell()->error = ft_strdup("syntax error");
 		shell()->status = 1;
@@ -85,7 +82,8 @@ t_cmd	*create_tmp(char *args, t_cmd *head)
 		return (NULL);
 	tmp->pip[0] = 0;
 	tmp->pip[1] = 1;
-	tmp->type = cmd_type(tmp->args);
+	if (tmp->type == BEGIN)
+		tmp->type = cmd_type(tmp);
 	if (tmp->type == CMD)
 		tmp->path = search_path(shell()->env, tmp->args[0]);
 	return (tmp);

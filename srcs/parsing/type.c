@@ -54,3 +54,18 @@ int	check_out(t_redir *out)
 	}
 	return (1);
 }
+
+
+int	is_justredir(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] != '>' && str[i] != '<' && str[i] != ' ' && str[i] != '\n' && str[i] != '\2')
+			return (1);
+		i++;
+	}
+	return (0);
+}

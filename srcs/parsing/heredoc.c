@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 16:58:49 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/08 17:15:33 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/09 15:03:00 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,8 @@ int	execute_heredoc(t_redir *redir, t_cmd *cmd)
 {
 	int		heredoc[2];
 	int		pid;
-	char	*expand;
 
 	shell()->heredoc = 0;
-	expand = NULL;
 	if (pipe(heredoc) < 0) 
 	{
 		perror("pipe");
