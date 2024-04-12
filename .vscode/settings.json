@@ -3,7 +3,8 @@
     "files.associations": {
         "pipex.h": "c",
         "minishell.h": "c",
-        "array": "c"
+        "array": "c",
+        "*.tcc": "c"
     },
     "42header.email": "fsantos2@student.42.fr",
     "42header.username": "fsantos2"

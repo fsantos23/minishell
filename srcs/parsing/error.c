@@ -6,35 +6,13 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 13:12:25 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/08 17:02:37 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/12 13:09:58 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
 //done
-
-int	check_cmds(t_cmd *cmd)
-{
-	t_cmd	*tmp;
-
-	tmp = cmd;
-	while (tmp)
-	{
-		if (!tmp->path && tmp->type == CMD)
-		{
-			if (!shell()->error)
-			{
-				(shell()->error = ft_strjoin(tmp->args[0], \
-				" : command not found"));
-				shell()->status = 127;
-			}
-			return (0);
-		}
-		tmp = tmp->next;
-	}
-	return (1);
-}
 
 int	error_handler(void)
 {

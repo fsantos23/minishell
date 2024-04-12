@@ -69,3 +69,11 @@ int	is_justredir(char *str)
 	}
 	return (0);
 }
+
+int	create_fd_tmp(void)
+{
+	int fd;
+
+	fd = open("/tmp/abc.txt", O_CREAT | O_RDONLY | O_TRUNC, 0777);
+	return (fd);
+}

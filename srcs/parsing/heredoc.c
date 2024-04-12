@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 16:58:49 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/09 15:03:00 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/12 12:46:26 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	handle_child_process(t_redir *redir, int heredoc[2], t_cmd *cmd)
 {
 	char	*str;
 
+	close(heredoc[0]);
 	while (1) 
 	{
 		write(1, "> ", 2);
@@ -62,6 +63,8 @@ void	handle_child_process(t_redir *redir, int heredoc[2], t_cmd *cmd)
 		free(str);
 	}
 	close(heredoc[1]);
+	close_fd(cmd->pip[0], cmd->pip[1]);
+	close_fd(cmd->fd_in, cmd->fd_out);
 	free_everything(cmd);
 	free_array(shell()->env);
 	free(shell()->error);
@@ -73,12 +76,12 @@ int	handle_parent_process(int pid, int heredoc[2])
 	int	status;
 
 	waitpid(pid, &status, 0);
+	close(heredoc[1]);
 	if (WIFEXITED(status) && WEXITSTATUS(status) == 1)
 	{
 		close(heredoc[0]);
 		return (-2);
 	}
-	close(heredoc[1]);
 	return (heredoc[0]);
 }
 
@@ -88,13 +91,13 @@ int	execute_heredoc(t_redir *redir, t_cmd *cmd)
 	int		pid;
 
 	shell()->heredoc = 0;
-	if (pipe(heredoc) < 0) 
+	if (pipe(heredoc) < 0)
 	{
 		perror("pipe");
 		exit(0);
 	}
 	pid = fork();
-	if (pid < 0) 
+	if (pid < 0)
 	{
 		printf("fork failed\n");
 		exit(EXIT_FAILURE);

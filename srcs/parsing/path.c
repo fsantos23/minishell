@@ -6,7 +6,7 @@
 /*   By: fsantos2 <fsantos2@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 20:32:19 by fsantos2          #+#    #+#             */
-/*   Updated: 2024/04/07 22:08:57 by fsantos2         ###   ########.fr       */
+/*   Updated: 2024/04/12 13:10:33 by fsantos2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 //done
 
-char	*check_cmd(char *cmd)
+char	*check_cmds(char *cmd)
 {
 	if (access(cmd, F_OK) == 0)
 		return (ft_strdup(cmd));
@@ -59,7 +59,7 @@ char	*search_path(char **env, char *cmd)
 	i = 0;
 	paths = NULL;
 	if (ft_strchr(cmd, '/') != NULL)
-		return (check_cmd(cmd));
+		return (check_cmds(cmd));
 	paths = search_env(env);
 	if (!paths)
 		return (NULL);
